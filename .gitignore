@@ -1,0 +1,7 @@
+# Local development
+*.env
+*.dev
+*.idea
+
+# OS
+Thumbs.db
