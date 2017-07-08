@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Simpsons</title>
+    <link rel="icon" href="images/favicon.gif">
+    <link href="https://fonts.googleapis.com/css?family=Assistant|Quicksand" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+  </head>
+
+  <body>
+    <!-- header -->
+    <header>
+      <div id="logo"><a href="#"></a></div>
+      <form id="search">
+        <input id="search-field" type="text" name="search">
+        <input id="sbmt-btn" type="submit" value="">
+      </form>
+      <nav id="header-nav">
+        <a href="">Episodes</a>
+        <a href="">Setting</a>
+        <a href="">Creators</a>
+        <a href="">Influence</a>
+      </nav>
+
+      <div id="menu-icon" onclick="handleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </header>
+
+    <!-- navmenu on the left -->
+    <nav id="leftside-nav">
+      <a href=""><img src="images/chars/homer.png">Homer</a>
+      <a href=""><img src="images/chars/marge.png">Marge</a>
+      <a href=""><img src="images/chars/lisa.png">Lisa</a>
+      <a href=""><img src="images/chars/bart.png">Bart</a>
+      <a href=""><img src="images/chars/maggie.png">Maggie</a>
+      <a href=""><img src="images/chars/others.png">Other Characters</a>
+    </nav>
+
+    <!-- main section -->
+    <section>
+      <div id="title">
+        <h1>THE SIMPSONS</h1>
+        <h2>a sitcom of several generations</h2>
+      </div>
+      <!-- primary content -->
+      <div id="primary-content">
+        <div class="content">Bart Simpson's name is an anagram of BRAT. His full name is Bartholomew Jojo Simpson.</div>
+        <div class="content">All characters on The Simpson's have just 4 fingers on each hand, except for one with five: God.</div>
+        <div class="content">All characters on The Simpson's are based on, and named after his creator Matt Groening's family.</div>
+        <div class="content">It took Danny Elfman just two days to compose The Simpsons’ famous theme in 1989.</div>
+        <div class="content">Krusty the Clown was originally created to be Homer's secret identity.</div>
+        <div class="content">The Simpson's couch gag is actually a trick used by the writers to make the show longer or shorter.</div>
+        <div class="content">D'oh! is a real word in the Oxford English Dictionary . In The Simpsons scripts, it just says "annoyed grunt."</div>
+        <div class="content">In 1998, TIME Magazine named Bart Simpson one of the most influential people of the century.</div>
+        <div class="content">Fox owns the rights to The Simpsons until 2082.</div>
+        <div class="content">If you could watch all of "The Simpsons" episodes without ads nor sleep, it'd take about 8.5 days.</div>
+        <div class="content">Bart Simpsons' voice is played by a woman.</div>
+        <div class="content">Homer Simpson once had a theory that the universe was shaped like a donut. The theory has some validity, according to cosmologists.</div>
+      </div>
+
+      <div id="opened-content"></div>
+
+      <!-- secondary content -->
+      <div id="secondary-content">The Simpsons is an American animated sitcom created by Matt Groening for the Fox Broadcasting Company.<br>
+        The series is a satirical depiction of working-class life epitomized by the Simpson family, which consists of Homer, Marge, Bart, Lisa, and Maggie.<br>
+        The show is set in the fictional town of Springfield and parodies American culture, society, television, and the human condition.</div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+      <!-- list columns -->
+      <div id="list-block">
+        <div class="list-column">
+          <ul>
+            <li><a href="/#">Episodes</a></li>
+            <li><a href="/#">Setting</a></li>
+            <li><a href="/#">Creators</a></li>
+            <li><a href="/#">Influence</a></li>
+          </ul>
+        </div>
+        <div class="list-column">
+          <ul>
+            <li><a href="/#">Homer</a></li>
+            <li><a href="/#">Marge</a></li>
+            <li><a href="/#">Lisa</a></li>
+            <li><a href="/#">Bart</a></li>
+            <li><a href="/#">Maggie</a></li>
+            <li><a href="/#">Other Characters</a></li>
+          </ul>
+        </div>
+        <div class="list-column">
+          <ul>
+            <li><a href="/#">Comic Books</a></li>
+            <li><a href="/#">Film</a></li>
+            <li><a href="/#">Music</a></li>
+            <li><a href="/#">Video Games</a></li>
+          </ul>
+        </div>
+        <div class="list-column">
+          <ul>
+            <li><a href="/#">FOX NOW</a></li>
+            <li><a href="/#">FOX's Community</a></li>
+            <li><a href="/#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- social media links -->
+      <div id="social-media">
+        <div class="social-media-icon">
+          <a id="facebook-icon" href="" target="_blank"></a>
+        </div>
+        <div class="social-media-icon">
+          <a id="twitter-icon" href="" target="_blank"></a>
+        </div>
+        <div class="social-media-icon">
+          <a id="youtube-icon" href="" target="_blank"></a>
+        </div>
+      </div>
+
+      <p id="copyright">&copy; 2017 FOX</p>
+    </footer>
+
+    <script>
+      if (window.matchMedia('(max-width:768px)').matches) {
+        console.log('match');
+        var elements = document.getElementsByClassName('content');
+        for (i = 0; i < elements.length; i++) {
+          elements[i].addEventListener('click', function() {
+            let text = this.innerHTML;
+            let openedContent = document.getElementById('opened-content');
+            console.log(text);
+
+            openedContent.addEventListener('click', function() {
+              this.style.display = 'none';
+            });
+            openedContent.innerHTML = text;
+            openedContent.style.display = 'block';
+          });
+        }
+      }
+
+      function handleMenu() {
+        let nav = document.getElementById('header-nav');
+        if (nav.style.display == 'none') {
+          nav.style.display = 'block';
+        } else {
+          nav.style.display = 'none';
+        }
+      }
+    </script>
+  </body>
+</html>

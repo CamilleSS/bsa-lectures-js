@@ -27,9 +27,9 @@ header {
 }
 
 #logo {
-  width: 100px;
+  width: 200px;
   height: 100px;
-  background: url(images/logo.png) center/100px;
+  background: url(images/logo.png) center/200px no-repeat;
 }
 
 #header-nav {
