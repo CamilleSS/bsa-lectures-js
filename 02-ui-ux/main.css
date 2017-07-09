@@ -204,7 +204,8 @@ h2 {
   left: 20%;
   top: 20%;
   color: #f5f5f5;
-  font-size: 2rem;
+  text-shadow: 2px 2px #333;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -537,6 +538,10 @@ li > a:hover {
 
   /* content */
 
+  #tip {
+    display: none;
+  }
+
   #primary-content {
     width: calc(85vw - 17px);
     background: url(images/content-bg.jpg) center/calc(85vw - 17px) no-repeat;
@@ -564,7 +569,7 @@ li > a:hover {
   footer {
     z-index: 1;
     width: calc(100vw - 17px);
-    height: 20vh;
+    min-height: 20vh;
     margin: 0;
   }
 
@@ -593,5 +598,6 @@ li > a:hover {
 
   #copyright {
     right: 50px;
+    bottom: 20px;
   }
 }

@@ -63,7 +63,7 @@
       </div>
 
       <div id="content-popup"></div>
-      <div id="tip">Click on me!</div>
+      <div id="tip">Click on<br>the image!</div>
 
       <!-- secondary content -->
       <div id="secondary-content">The Simpsons is an American animated sitcom created by Matt Groening for the Fox Broadcasting Company.<br>
@@ -154,8 +154,6 @@
       // show/hide navigation menu in header
       function handleMenu() {
         let nav = document.getElementById('header-nav');
-        console.log('click');
-        console.log(nav.style.display);
         if (nav.style.display === 'none' || nav.style.display === '') {
           nav.style.display = 'block';
         } else {
