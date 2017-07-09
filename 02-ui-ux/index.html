@@ -62,7 +62,8 @@
         <div class="content">Homer Simpson once had a theory that the universe was shaped like a donut. The theory has some validity, according to cosmologists.</div>
       </div>
 
-      <div id="opened-content"></div>
+      <div id="content-popup"></div>
+      <div id="tip">Click on me!</div>
 
       <!-- secondary content -->
       <div id="secondary-content">The Simpsons is an American animated sitcom created by Matt Groening for the Fox Broadcasting Company.<br>
@@ -127,27 +128,35 @@
 
     <script>
       // show content text on click on main image for small and middle screens
-      if (window.matchMedia('(max-width:1199px)').matches) {
-        let elements = document.getElementsByClassName('content');
+      var elements = document.getElementsByClassName('content');
 
+      for (i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', function() {
+          if (window.matchMedia('(max-width:1199px)').matches) {
+            document.getElementById('tip').style.display = 'none';
+            handleContent.apply(this);
+          }
+        });
+      }
+
+      function handleContent() {
         for (i = 0; i < elements.length; i++) {
-          elements[i].addEventListener('click', function() {
-            let text = this.innerHTML;
-            let openedContent = document.getElementById('opened-content');
-
-            openedContent.addEventListener('click', function() {
-              this.style.display = 'none';
-            });
-            openedContent.innerHTML = text;
-            openedContent.style.display = 'block';
+          let text = this.innerHTML;
+          let popup = document.getElementById('content-popup');
+          popup.addEventListener('click', function () {
+            this.style.display = 'none';
           });
+          popup.innerHTML = text;
+          popup.style.display = 'block';
         }
       }
 
       // show/hide navigation menu in header
       function handleMenu() {
         let nav = document.getElementById('header-nav');
-        if (nav.style.display === 'none') {
+        console.log('click');
+        console.log(nav.style.display);
+        if (nav.style.display === 'none' || nav.style.display === '') {
           nav.style.display = 'block';
         } else {
           nav.style.display = 'none';
