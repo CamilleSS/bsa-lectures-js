@@ -2,8 +2,6 @@
 
 // REMOVE SOME EVENT LISTENERS
 
-// REPLACE DATA LINK
-
 // CREATE CLASS FOR DATA HANDLING
 
 // OPTIMIZE RESPONSIVE STYLE
@@ -139,45 +137,54 @@ window.onload = () => {
       let date = new Date(data[i].createdAt);
       let dateToDisplay = date.toLocaleString();
 
-      if (!localStorage.deletedPosts.split(',').includes(i.toString()) && data[i].title.toLowerCase().includes(searchInput)) {
-        let post = document.createElement('div');
-        let deleteIcon = document.createElement('div');
-        let postTitle = document.createElement('h3');
-        let postDescription = document.createElement('p');
-        let postImageBlock = document.createElement('div');
-        let postImage = document.createElement('img');
-        let postDate = document.createElement('p');
-        let postTags = document.createElement('ul');
+      let deletedPosts = localStorage.deletedPosts.split(',');
+      let postNotDeleted = !deletedPosts.includes(i.toString());
+      let matchSearchInput = data[i].title.toLowerCase().includes(searchInput);
 
-        post.setAttribute('index', i);
-        post.className = 'post';
-        deleteIcon.className = 'delete-icon';
-        postDescription.className = 'post-description';
-        postImageBlock.className = 'post-image-block';
-        postDate.className = 'post-date';
-        postTags.className = 'post-tags';
+      if (postNotDeleted && matchSearchInput) {
+        let prepareElement = {
+          'post': function(element) {
+            element.setAttribute('index', i);
+          },
+          'deleteIcon': element => {
+            element.appendChild(document.createElement('div'));
+            element.appendChild(document.createElement('div'));
+            deletePost(element);
+          },
+          'postTitle': element => {element.innerHTML = data[i].title},
+          'postDescription': element => {element.innerHTML = data[i].description},
+          'postImage': element => {element.setAttribute('src', data[i].image)},
+          'postImageBlock': element => {element.appendChild(postImage)},
+          'postDate': element => {element.innerHTML = dateToDisplay},
+          'postTags': element => {
+            for (let j = 0; j < data[i].tags.length; j++) {
+              let tag = document.createElement('li');
+              tag.innerHTML = data[i].tags[j];
+              element.appendChild(tag);
+            }
+          }
+        };
 
-        postTitle.innerHTML = data[i].title;
-        postDescription.innerHTML = data[i].description;
-        postImage.setAttribute('src', data[i].image);
-        postDate.innerHTML = dateToDisplay;
+        let constructElement = (tagName,
+                                className = '',
+                                ownFunction,
+                                postChild = true) => {
+          let element = document.createElement(tagName);
+          if (className) {element.className = className}
+          prepareElement[ownFunction](element);
+          if (postChild) {post.appendChild(element)}
+          return element;
+        };
 
-        for (let j = 0; j < data[i].tags.length; j++) {
-          let tag = document.createElement('li');
-          tag.innerHTML = data[i].tags[j];
-          postTags.appendChild(tag);
-        }
+        let post = constructElement('div', 'post', 'post', false);
+        let deleteIcon = constructElement('div', 'delete-icon', 'deleteIcon');
+        let postTitle = constructElement('h3', '', 'postTitle');
+        let postDescription = constructElement('p', 'post-description', 'postDescription');
+        let postImage = constructElement('img', '', 'postImage');
+        let postImageBlock = constructElement('div', 'post-image-block', 'postImageBlock');
+        let postDate = constructElement('p', 'post-date', 'postDate');
+        let postTags = constructElement('ul', 'post-tags', 'postTags');
 
-        deleteIcon.appendChild(document.createElement('div'));
-        deleteIcon.appendChild(document.createElement('div'));
-        deletePost(deleteIcon);
-        post.appendChild(deleteIcon);
-        post.appendChild(postTitle);
-        post.appendChild(postDescription);
-        postImageBlock.appendChild(postImage);
-        post.appendChild(postImageBlock);
-        post.appendChild(postDate);
-        post.appendChild(postTags);
         postBlock.appendChild(post);
       } else {
         loadingPos++;
@@ -193,7 +200,10 @@ window.onload = () => {
           let title = document.getElementById('title');
           let primaryContent = document.getElementById('primary-content');
 
-          if (window.innerHeight + window.scrollY >= header.offsetHeight + title.offsetHeight + primaryContent.offsetHeight) {
+          let pixelsToContentBottom = header.offsetHeight +
+                                      title.offsetHeight +
+                                      primaryContent.offsetHeight;
+          if (window.innerHeight + window.scrollY >= pixelsToContentBottom) {
             loadingPos += 10;
             sortPostsByDate(data);
             sortPostsByTags(data);
@@ -251,14 +261,16 @@ window.onload = () => {
   const recoverPosts = data => {
     document.getElementById('posts-recover')
       .addEventListener('click', () => {
-        localStorage.deletedPosts = '';
+        if (localStorage.deletedPosts) {
+          localStorage.deletedPosts = '';
 
-        loadingPos = 0;
-        sortPostsByDate(data);
-        sortPostsByTags(data);
-        removeChildren(postBlock);
-        let searchInput = document.getElementById('search-field').value;
-        renderPosts(data, searchInput);
+          loadingPos = 0;
+          sortPostsByDate(data);
+          sortPostsByTags(data);
+          removeChildren(postBlock);
+          let searchInput = document.getElementById('search-field').value;
+          renderPosts(data, searchInput);
+        }
       });
   };
 
