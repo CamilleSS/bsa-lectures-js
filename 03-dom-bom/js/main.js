@@ -1,12 +1,13 @@
 // UNTIL DEADLINE:
 
-// REMOVE SOME EVENT LISTENERS
-
-// CREATE CLASS FOR DATA HANDLING
-
 // OPTIMIZE RESPONSIVE STYLE
 
+// ADD COMMENTS
+
+'use strict'
+
 window.onload = () => {
+  window.scrollTo(0, 0);
 
   // handle navigation menu in the header
   (() => {
@@ -40,7 +41,6 @@ window.onload = () => {
     .then(data => {
       let postData = data.data;
       getTags(postData);
-      sortPostsByDate(postData);
       sortPostsByTags(postData);
       renderPosts(postData);
       searchPosts(postData);
@@ -58,12 +58,15 @@ window.onload = () => {
 
   // get and render tag list
   const getTags = data => {
+    if (!localStorage.getItem('selectedTags')) {
+      localStorage.selectedTags = '';
+    }
     let tagListElement = document.getElementById('tag-selection').querySelector('div');
     let tagList = [];
 
-    for (i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       let postTags = data[i].tags;
-      for (j = 0; j < postTags.length; j++) {
+      for (let j = 0; j < postTags.length; j++) {
         let tagName = postTags[j].toLowerCase();
 
         if (!tagList.includes(tagName)) {
@@ -91,100 +94,98 @@ window.onload = () => {
     }
   };
 
-  // sort posts by date
-  const sortPostsByDate = data => {
+  // sort posts by date and selected tags
+  const sortPostsByTags = data => {
     data.sort((a, b) => {
+      const countTags = (post) => {
+        let count = 0;
+
+        for (let i = 0; i < post.tags.length; i++) {
+          let tag = post.tags[i].toLowerCase();
+          if (localStorage.selectedTags.includes(tag)) {
+            count += 1;
+          }
+        }
+        return count;
+      };
+
       let comparison = Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      if (localStorage.selectedTags.length > 0) {
+        comparison = countTags(b) - countTags(a);
+        if (comparison === 0) {
+          comparison = Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        }
+      }
+
       return comparison;
     });
   };
 
-  // sort posts by selected tags
-  const sortPostsByTags = data => {
-    if (localStorage.selectedTags.length > 0) {
-      data.sort((a, b) => {
-        const countTags = (post) => {
-          let count = 0;
+  // create post DOM elements
+  const createPostElement = (postData, postIndex) => {
+    let date = new Date(postData.createdAt);
+    let dateToDisplay = date.toLocaleString();
 
-          for (let i = 0; i < post.tags.length; i++) {
-            let tag = post.tags[i].toLowerCase();
-            if (localStorage.selectedTags.includes(tag)) {
-              count += 1;
-            }
-          }
-          return count;
-        };
-
-        let aTagsNumber = countTags(a);
-        let bTagsNumber = countTags(b);
-        let comparison = bTagsNumber - aTagsNumber;
-
-        if (comparison === 0) {
-          comparison = Date.parse(b.createdAt) - Date.parse(a.createdAt);
+    const prepareElement = {
+      'post': function(element) {
+        element.setAttribute('index', postIndex);
+      },
+      'deleteIcon': element => {
+        element.appendChild(document.createElement('div'));
+        element.appendChild(document.createElement('div'));
+        deletePost(element);
+      },
+      'postTitle': element => element.innerHTML = postData.title,
+      'postDescription': element => element.innerHTML = postData.description,
+      'postImage': element => element.setAttribute('src', postData.image),
+      'postImageBlock': element => element.appendChild(postImage),
+      'postDate': element => element.innerHTML = dateToDisplay,
+      'postTags': element => {
+        for (let j = 0; j < postData.tags.length; j++) {
+          let tag = document.createElement('li');
+          tag.innerHTML = postData.tags[j];
+          element.appendChild(tag);
         }
-        return comparison;
-      });
-    }
+      }
+    };
+
+    let constructElement = (tagName,
+                            className = '',
+                            ownFunction,
+                            postChild = true) => {
+      let element = document.createElement(tagName);
+      if (className) {element.className = className}
+      prepareElement[ownFunction](element);
+      if (postChild) {post.appendChild(element)}
+      return element;
+    };
+
+    let post = constructElement('div', 'post', 'post', false);
+    let deleteIcon = constructElement('div', 'delete-icon', 'deleteIcon');
+    let postTitle = constructElement('h3', '', 'postTitle');
+    let postDescription = constructElement('p', 'post-description', 'postDescription');
+    let postImage = constructElement('img', '', 'postImage');
+    let postImageBlock = constructElement('div', 'post-image-block', 'postImageBlock');
+    let postDate = constructElement('p', 'post-date', 'postDate');
+    let postTags = constructElement('ul', 'post-tags', 'postTags');
+
+    return post;
   };
 
   // display data
   const renderPosts = (data, searchInput = '') => {
+    if (!localStorage.getItem('deletedPosts')) {
+      localStorage.deletedPosts = '';
+    }
+
     for (let i = loadingPos; i < loadingPos + 10; i++) {
       if (i === data.length) {break}
-      if (!'deletedPosts' in localStorage) {
-        localStorage.deletedPosts = '';
-      }
-      let date = new Date(data[i].createdAt);
-      let dateToDisplay = date.toLocaleString();
-
       let deletedPosts = localStorage.deletedPosts.split(',');
       let postNotDeleted = !deletedPosts.includes(i.toString());
       let matchSearchInput = data[i].title.toLowerCase().includes(searchInput);
 
       if (postNotDeleted && matchSearchInput) {
-        let prepareElement = {
-          'post': function(element) {
-            element.setAttribute('index', i);
-          },
-          'deleteIcon': element => {
-            element.appendChild(document.createElement('div'));
-            element.appendChild(document.createElement('div'));
-            deletePost(element);
-          },
-          'postTitle': element => {element.innerHTML = data[i].title},
-          'postDescription': element => {element.innerHTML = data[i].description},
-          'postImage': element => {element.setAttribute('src', data[i].image)},
-          'postImageBlock': element => {element.appendChild(postImage)},
-          'postDate': element => {element.innerHTML = dateToDisplay},
-          'postTags': element => {
-            for (let j = 0; j < data[i].tags.length; j++) {
-              let tag = document.createElement('li');
-              tag.innerHTML = data[i].tags[j];
-              element.appendChild(tag);
-            }
-          }
-        };
-
-        let constructElement = (tagName,
-                                className = '',
-                                ownFunction,
-                                postChild = true) => {
-          let element = document.createElement(tagName);
-          if (className) {element.className = className}
-          prepareElement[ownFunction](element);
-          if (postChild) {post.appendChild(element)}
-          return element;
-        };
-
-        let post = constructElement('div', 'post', 'post', false);
-        let deleteIcon = constructElement('div', 'delete-icon', 'deleteIcon');
-        let postTitle = constructElement('h3', '', 'postTitle');
-        let postDescription = constructElement('p', 'post-description', 'postDescription');
-        let postImage = constructElement('img', '', 'postImage');
-        let postImageBlock = constructElement('div', 'post-image-block', 'postImageBlock');
-        let postDate = constructElement('p', 'post-date', 'postDate');
-        let postTags = constructElement('ul', 'post-tags', 'postTags');
-
+        let post = createPostElement(data[i], i);
         postBlock.appendChild(post);
       } else {
         loadingPos++;
@@ -196,16 +197,11 @@ window.onload = () => {
   const loadPosts = data => {
       window.addEventListener('scroll', () => {
         if (loadingPos < data.length - 10) {
-          let header = document.querySelector('header');
-          let title = document.getElementById('title');
-          let primaryContent = document.getElementById('primary-content');
+          let footer = document.querySelector('footer');
+          let contentEndPos = document.body.offsetHeight - footer.offsetHeight;
 
-          let pixelsToContentBottom = header.offsetHeight +
-                                      title.offsetHeight +
-                                      primaryContent.offsetHeight;
-          if (window.innerHeight + window.scrollY >= pixelsToContentBottom) {
+          if (window.innerHeight + window.scrollY >= contentEndPos) {
             loadingPos += 10;
-            sortPostsByDate(data);
             sortPostsByTags(data);
             let searchInput = document.getElementById('search-field').value;
             renderPosts(data, searchInput);
@@ -229,7 +225,6 @@ window.onload = () => {
         localStorage.selectedTags = selectedTags;
 
         loadingPos = 0;
-        sortPostsByDate(data);
         sortPostsByTags(data);
         removeChildren(postBlock);
         let searchInput = document.getElementById('search-field').value;
@@ -265,7 +260,6 @@ window.onload = () => {
           localStorage.deletedPosts = '';
 
           loadingPos = 0;
-          sortPostsByDate(data);
           sortPostsByTags(data);
           removeChildren(postBlock);
           let searchInput = document.getElementById('search-field').value;
