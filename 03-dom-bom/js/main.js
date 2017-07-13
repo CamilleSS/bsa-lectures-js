@@ -1,3 +1,13 @@
+// UNTIL DEADLINE:
+
+// REMOVE SOME EVENT LISTENERS
+
+// REPLACE DATA LINK
+
+// CREATE CLASS FOR DATA HANDLING
+
+// OPTIMIZE RESPONSIVE STYLE
+
 window.onload = () => {
 
   // handle navigation menu in the header
@@ -26,7 +36,7 @@ window.onload = () => {
     return response.json();
   };
 
-  fetch('posts.json')
+  fetch('https://api.myjson.com/bins/152f9j')
     .then(status)
     .then(json)
     .then(data => {
@@ -35,10 +45,9 @@ window.onload = () => {
       sortPostsByDate(postData);
       sortPostsByTags(postData);
       renderPosts(postData);
-      loadPosts(loadingPos);
+      searchPosts(postData);
+      loadPosts(postData);
       handleTagSelection(postData);
-      searchPosts();
-      deletePost();
       recoverPosts(postData);
     }).catch(error => {
       console.log(
@@ -47,13 +56,13 @@ window.onload = () => {
     });
 
   let postBlock = document.getElementById('primary-content');
-  const loadingPos = 0;
+  let loadingPos = 0;
 
   // get and render tag list
   const getTags = data => {
     let tagListElement = document.getElementById('tag-selection').querySelector('div');
-
     let tagList = [];
+
     for (i = 0; i < data.length; i++) {
       let postTags = data[i].tags;
       for (j = 0; j < postTags.length; j++) {
@@ -121,16 +130,16 @@ window.onload = () => {
   };
 
   // display data
-  const renderPosts = data => {
-    for (let i = loadingPos; i < 10; i++) {
-      let date = new Date(data[i].createdAt);
-      let dateToDisplay = date.toLocaleString();
-
+  const renderPosts = (data, searchInput = '') => {
+    for (let i = loadingPos; i < loadingPos + 10; i++) {
+      if (i === data.length) {break}
       if (!'deletedPosts' in localStorage) {
         localStorage.deletedPosts = '';
       }
+      let date = new Date(data[i].createdAt);
+      let dateToDisplay = date.toLocaleString();
 
-      if (!localStorage.deletedPosts.split(',').includes(i.toString())) {
+      if (!localStorage.deletedPosts.split(',').includes(i.toString()) && data[i].title.toLowerCase().includes(searchInput)) {
         let post = document.createElement('div');
         let deleteIcon = document.createElement('div');
         let postTitle = document.createElement('h3');
@@ -161,6 +170,7 @@ window.onload = () => {
 
         deleteIcon.appendChild(document.createElement('div'));
         deleteIcon.appendChild(document.createElement('div'));
+        deletePost(deleteIcon);
         post.appendChild(deleteIcon);
         post.appendChild(postTitle);
         post.appendChild(postDescription);
@@ -169,13 +179,29 @@ window.onload = () => {
         post.appendChild(postDate);
         post.appendChild(postTags);
         postBlock.appendChild(post);
+      } else {
+        loadingPos++;
       }
     }
   };
 
   // load posts on scroll if user gets the end of the list of them
-  const loadPosts = pos => {
+  const loadPosts = data => {
+      window.addEventListener('scroll', () => {
+        if (loadingPos < data.length - 10) {
+          let header = document.querySelector('header');
+          let title = document.getElementById('title');
+          let primaryContent = document.getElementById('primary-content');
 
+          if (window.innerHeight + window.scrollY >= header.offsetHeight + title.offsetHeight + primaryContent.offsetHeight) {
+            loadingPos += 10;
+            sortPostsByDate(data);
+            sortPostsByTags(data);
+            let searchInput = document.getElementById('search-field').value;
+            renderPosts(data, searchInput);
+          }
+        }
+      });
   };
 
   // handle tag selection
@@ -191,44 +217,34 @@ window.onload = () => {
           }
         }
         localStorage.selectedTags = selectedTags;
+
+        loadingPos = 0;
         sortPostsByDate(data);
         sortPostsByTags(data);
-        postBlock.innerHTML = '';
-        renderPosts(data);
+        removeChildren(postBlock);
+        let searchInput = document.getElementById('search-field').value;
+        renderPosts(data, searchInput);
       });
   };
 
   // search posts by input
-  const searchPosts = () => {
+  const searchPosts = data => {
     let searchInput = document.getElementById('search-field');
-    let posts = document.getElementsByClassName('post');
     searchInput.addEventListener('keyup', () => {
       let value = searchInput.value.toLowerCase();
-
-      for (let i = 0; i < posts.length; i++) {
-        posts[i].style.display = 'block';
-        let postTitle = posts[i].querySelector('h3').innerHTML.toLowerCase();
-        if (!postTitle.includes(value)) {
-          posts[i].style.display = 'none';
-        }
-      }
+      loadingPos = 0;
+      removeChildren(postBlock);
+      renderPosts(data, value);
     });
-    deletePost();
   };
 
   // delete post
-  const deletePost = () => {
-    let deletedPosts = localStorage.deletedPosts.split(',');
-    let deleteIcons = document.getElementsByClassName('delete-icon');
-
-    for (let i = 0; i < deleteIcons.length; i++) {
-      deleteIcons[i].addEventListener('click', function() {
-        let post = this.parentElement;
-        deletedPosts.push(post.getAttribute('index'));
-        post.style.display = 'none';
-        localStorage.deletedPosts = deletedPosts;
-      });
-    }
+  const deletePost = (icon) => {
+    icon.addEventListener('click', function() {
+      let post = this.parentElement;
+      post.remove();
+      localStorage.deletedPosts += `,${post.getAttribute('index')}`;
+    });
   };
 
   // recover all posts after deletion
@@ -236,16 +252,13 @@ window.onload = () => {
     document.getElementById('posts-recover')
       .addEventListener('click', () => {
         localStorage.deletedPosts = '';
-        let posts = document.getElementsByClassName('post');
 
-        for (let i = 0; i < posts.length; i++) {
-          posts[i].style.display = 'block';
-        }
+        loadingPos = 0;
         sortPostsByDate(data);
         sortPostsByTags(data);
-        postBlock.innerHTML = '';
-        renderPosts(data);
-        console.log(localStorage.deletedPosts);
+        removeChildren(postBlock);
+        let searchInput = document.getElementById('search-field').value;
+        renderPosts(data, searchInput);
       });
   };
 
@@ -255,12 +268,11 @@ window.onload = () => {
       element.setAttribute(key, attrs[key]);
     }
   };
+
+  // remove every child node from an element
+  const removeChildren = element => {
+    while (element.hasChildNodes()) {
+      element.removeChild(element.childNodes[0]);
+    }
+  }
 };
-
-// REMOVE SOME EVENT LISTENERS
-
-// REPLACE DATA LINK
-
-// CREATE CLASS FOR DATA HANDLING
-
-// ontouchmove onwheel onscroll

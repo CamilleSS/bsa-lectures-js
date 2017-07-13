@@ -31,7 +31,6 @@ button {
 
 header {
   display: flex;
-  /* z-index was specified so content animation couldn't work through header */
   z-index: 1;
   position: fixed;
   justify-content: space-between;
@@ -173,7 +172,6 @@ h2 {
 #primary-content {
   display: flex;
   justify-content: center;
-  align-content: stretch;
   flex-wrap: wrap;
   width: 82vw;
   min-height: 70vh;
@@ -416,7 +414,7 @@ li > a:hover {
 
 
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1200px) {
 
   /* header */
 
@@ -464,7 +462,7 @@ li > a:hover {
     transition: underline 150ms;
   }
 
-  #tag-selection div:hover {
+  #tag-list > div:hover {
     text-decoration: underline;
   }
 
@@ -504,11 +502,6 @@ li > a:hover {
     flex-basis: 300px;
     padding: 40px;
     font-size: 1rem;
-  }
-
-  .post:hover {
-    animation: scalecontent 400ms linear;
-    opacity: 1;
   }
 
   /* footer */
