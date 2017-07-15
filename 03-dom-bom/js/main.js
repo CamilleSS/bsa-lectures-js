@@ -1,9 +1,3 @@
-// UNTIL DEADLINE:
-
-// OPTIMIZE RESPONSIVE STYLE
-
-// ADD COMMENTS
-
 'use strict';
 
 window.onload = () => {
@@ -47,7 +41,7 @@ window.onload = () => {
   fetchPostData.then(data => {
     let postData = data.data;
     getTags(postData);
-    sortPostsByTags(postData);
+    sortPosts(postData);
     renderPosts(postData);
     searchPosts(postData);
     loadPosts(postData);
@@ -58,7 +52,7 @@ window.onload = () => {
   let postBlock = document.getElementById('primary-content');
   let loadingPos = 0;
 
-  // get and render tag list
+  // get and render tag list; auto-select chosen tags on page load
   const getTags = data => {
     if (!localStorage.getItem('selectedTags')) {
       localStorage.selectedTags = '';
@@ -97,7 +91,7 @@ window.onload = () => {
   };
 
   // sort posts by date and selected tags
-  const sortPostsByTags = data => {
+  const sortPosts = data => {
     data.sort((a, b) => {
       const countTags = (post) => {
         let count = 0;
@@ -123,11 +117,12 @@ window.onload = () => {
     });
   };
 
-  // create post DOM elements
+  // create post's DOM elements
   const createPostElement = (postData, postIndex) => {
     let date = new Date(postData.createdAt);
     let dateToDisplay = date.toLocaleString();
 
+    // individual options for element handling
     const prepareElement = {
       'post': function(element) {
         element.setAttribute('index', postIndex);
@@ -151,6 +146,7 @@ window.onload = () => {
       }
     };
 
+    // create DOM element, optionally modify/handle it and attach it to a parent element
     let constructElement = (tagName,
                             className = '',
                             ownFunction,
@@ -162,6 +158,7 @@ window.onload = () => {
       return element;
     };
 
+    // generate post's DOM elements
     let post = constructElement('div', 'post', 'post', false);
     let deleteIcon = constructElement('div', 'delete-icon', 'deleteIcon');
     let postTitle = constructElement('h3', '', 'postTitle');
@@ -174,7 +171,7 @@ window.onload = () => {
     return post;
   };
 
-  // display data
+  // create post DOM elements according to data about deleted posts and search input
   const renderPosts = (data, searchInput = '') => {
     if (!localStorage.getItem('deletedPosts')) {
       localStorage.deletedPosts = '';
@@ -204,7 +201,7 @@ window.onload = () => {
 
           if (window.innerHeight + window.scrollY >= contentEndPos) {
             loadingPos += 10;
-            sortPostsByTags(data);
+            sortPosts(data);
             let searchInput = document.getElementById('search-field').value;
             renderPosts(data, searchInput);
           }
@@ -212,7 +209,7 @@ window.onload = () => {
       });
   };
 
-  // handle tag selection
+  // handle tag selection; save selected tags in localStorage
   const handleTagSelection = data => {
     document.getElementById('tag-selection').querySelector('button')
       .addEventListener('click', () => {
@@ -227,7 +224,7 @@ window.onload = () => {
         localStorage.selectedTags = selectedTags;
 
         loadingPos = 0;
-        sortPostsByTags(data);
+        sortPosts(data);
         removeChildren(postBlock);
         let searchInput = document.getElementById('search-field').value;
         renderPosts(data, searchInput);
@@ -245,7 +242,7 @@ window.onload = () => {
     });
   };
 
-  // delete post
+  // delete post and write it index into localStorage
   const deletePost = (icon) => {
     icon.addEventListener('click', function() {
       let post = this.parentElement;
@@ -262,7 +259,7 @@ window.onload = () => {
           localStorage.deletedPosts = '';
 
           loadingPos = 0;
-          sortPostsByTags(data);
+          sortPosts(data);
           removeChildren(postBlock);
           let searchInput = document.getElementById('search-field').value;
           renderPosts(data, searchInput);
@@ -270,7 +267,7 @@ window.onload = () => {
       });
   };
 
-  // set multiple attributes
+  // set multiple attributes to DOM element
   const setAttributes = (element, attrs) => {
     for (let key in attrs) {
       element.setAttribute(key, attrs[key]);
