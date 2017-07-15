@@ -21,10 +21,11 @@ a {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 5px;
   border: none;
   color: #333;
   background-color: #f5f5f5;
+  font-size: .7rem;
 }
 
 /* header */
@@ -41,12 +42,12 @@ header {
 }
 
 #logo {
-  background: url(../images/logo.png) center/100px no-repeat;
+  background: url(../images/logo.png) center/40px no-repeat;
 }
 
 #logo > a {
   display: inline-block;
-  width: 100px;
+  width: 40px;
   height: 10vh;
 }
 
@@ -78,6 +79,10 @@ input {
 
 #search-field:focus {
   border-color: #ffdd13;
+}
+
+#posts-recover {
+  margin-right: 5px;
 }
 
 #header-nav {
@@ -125,32 +130,33 @@ input {
 
 #tag-selection {
   z-index: 1;
-  width: 18vw;
+  width: 25vw;
   height: 85vh;
   position: fixed;
   margin-top: 15vh;
-  padding: 10px;
+  padding: 5px;
   background-color: #ffdd13;
+  font-size: .7rem;
 }
 
 #tag-selection div {
   display: block;
-  margin: 0 0 3vh 0;
+  margin: 0;
 }
 
 /* main section */
 
 section {
   position: relative;
-  width: 82vw;
-  margin: 15vh 0 0 18vw;
+  width: 75vw;
+  margin: 15vh 0 0 25vw;
   background-color: #ffdd13;
 }
 
 #title {
   display: block;
-  height: 15vh;
-  padding: 20px 0;
+  height: auto;
+  padding: 10px 0;
   text-align: center;
   vertical-align: middle;
 }
@@ -160,7 +166,7 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 1.2rem;
+  font-size: .9rem;
 }
 
 h2 {
@@ -173,23 +179,28 @@ h2 {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  width: 82vw;
+  width: 75vw;
   min-height: 70vh;
 }
 
 .post {
   flex-grow: 1;
-  flex-basis: 80px;
+  flex-basis: 90%;
   position: relative;
+  padding: 10px;
   opacity: 1;
   background-color: rgba(245, 245, 245, .5);
-  font-size: .6rem;
+  font-size: .8rem;
+}
+
+.post-image-block > img {
+  width: 80%;
 }
 
 .delete-icon {
   position: absolute;
-  right: 40px;
-  top: 40px;
+  right: 10px;
+  top: 10px;
   width: 16px;
   height: 16px;
   font-size: 0;
@@ -218,7 +229,7 @@ h2 {
 
 footer {
   position: relative;
-  margin-left: 18vw;
+  margin-left: 25vw;
   padding: 50px;
   background-color: #333;
 }
@@ -305,7 +316,19 @@ li > a:hover {
 
 @media screen and (min-width: 400px) {
 
+  button {
+    font-size: .8rem;
+  }
+
   /* header */
+
+  #logo {
+    background-size: 80px;
+  }
+
+  #logo > a {
+    width: 80px;
+  }
 
   #search-field {
     width: 100px;
@@ -322,7 +345,13 @@ li > a:hover {
   /* tag list */
 
   #tag-selection {
-    padding: 20px;
+    width: 25vw;
+    padding: 10px;
+    font-size: .9rem;
+  }
+
+  #tag-selection div {
+    margin: 10px 0;
   }
 
   /* main section */
@@ -369,29 +398,37 @@ li > a:hover {
   /* tag list */
 
   #tag-selection {
-    width: 10vw;
+    width: 15vw;
     padding: 30px;
   }
 
   /* main section */
 
   section {
-    width: 90vw;
-    margin-left: 10vw;
+    width: 85vw;
+    margin-left: 15vw;
+  }
+
+  #primary-content {
+    width: 85vw;
   }
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
 
   h2 {
     font-size: 1.3rem;
   }
 
+  .post {
+    flex-basis: 200px;
+  }
+
   /* footer */
 
   footer {
-    margin-left: 10vw;
+    margin-left: 15vw;
   }
 
   /* link block on the bottom */
@@ -415,6 +452,10 @@ li > a:hover {
 
 
 @media screen and (min-width: 1200px) {
+
+  button {
+    padding: 10px 20px;
+  }
 
   /* header */
 
@@ -450,11 +491,15 @@ li > a:hover {
   /* tag list */
 
   #tag-selection {
-    width: 15vw;
     padding: 50px;
+    font-size: initial;
   }
 
-  #list div {
+  #tag-selection div {
+    margin: 0 0 3vh 0;
+  }
+
+  #tag-list div {
     width: 100px;
     color: #333;
     font-size: 1.2rem;
@@ -475,6 +520,7 @@ li > a:hover {
 
   #title {
     position: relative;
+    height: 15vh;
   }
 
   h1, h2 {
@@ -502,6 +548,15 @@ li > a:hover {
     flex-basis: 300px;
     padding: 40px;
     font-size: 1rem;
+  }
+
+  .delete-icon {
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    width: 16px;
+    height: 16px;
+    font-size: 0;
   }
 
   /* footer */
