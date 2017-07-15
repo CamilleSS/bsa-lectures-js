@@ -34,7 +34,7 @@ window.onload = () => {
     .then(json)
     .catch(error => {
       console.log(
-        `There was a problem with representing the data. ${error}`
+        `There was a problem with fetching the data. ${error}`
       );
     });
 
