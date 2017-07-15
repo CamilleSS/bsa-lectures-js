@@ -4,7 +4,7 @@
 
 // ADD COMMENTS
 
-'use strict'
+'use strict';
 
 window.onload = () => {
   window.scrollTo(0, 0);
@@ -35,23 +35,25 @@ window.onload = () => {
     return response.json();
   };
 
-  fetch('https://api.myjson.com/bins/152f9j')
+  const fetchPostData = fetch('https://api.myjson.com/bins/152f9j')
     .then(status)
     .then(json)
-    .then(data => {
-      let postData = data.data;
-      getTags(postData);
-      sortPostsByTags(postData);
-      renderPosts(postData);
-      searchPosts(postData);
-      loadPosts(postData);
-      handleTagSelection(postData);
-      recoverPosts(postData);
-    }).catch(error => {
+    .catch(error => {
       console.log(
         `There was a problem with representing the data. ${error}`
       );
     });
+
+  fetchPostData.then(data => {
+    let postData = data.data;
+    getTags(postData);
+    sortPostsByTags(postData);
+    renderPosts(postData);
+    searchPosts(postData);
+    loadPosts(postData);
+    handleTagSelection(postData);
+    recoverPosts(postData);
+  });
 
   let postBlock = document.getElementById('primary-content');
   let loadingPos = 0;
