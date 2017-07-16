@@ -2,6 +2,7 @@
 *.env
 *.dev
 *.idea
+node_modules
 
 # OS
 Thumbs.db
