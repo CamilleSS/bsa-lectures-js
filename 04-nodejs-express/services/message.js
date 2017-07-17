@@ -21,7 +21,7 @@ const messages = [{
 }, {
   "id": 5,
   "senderId": 4,
- "receiverId": 5,
+  "receiverId": 5,
   "messageText": "In facilisis, augue id malesuada egestas, leo ex dictum ex, at mollis tortor felis convallis leo."
 }, {
   "id": 6,

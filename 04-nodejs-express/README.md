@@ -7,6 +7,16 @@
 ## Routes
 
 ### Users
+
+```javascript
+// data sample
+{
+  "id": 15,
+  "name": "Kenny",
+  "email": "kenny@gmail.com"
+}
+```
+
 * **GET /api/user** - read the list of all users
 * **GET /api/user/id** - read the data of a specific user
 * **POST /api/user** - create new user
@@ -14,6 +24,17 @@
 * **DELETE /api/user/id** - delete a specific user
 
 ### Messages
+
+```javascript
+// data sample
+{
+  "id": 50,
+  "senderId": 5,
+  "receiverId": 10,
+  "messageText": "abyrvalg"
+}
+```
+
 * **GET /api/message** - read the list of all messages
 * **GET /api/message/id** - read the data of a specific message
 * **POST /api/message** - create new message
