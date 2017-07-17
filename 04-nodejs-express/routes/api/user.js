@@ -26,8 +26,8 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const obj = req.body;
-  userService.add(obj, (error, data) => {
+  const newUser = req.body;
+  userService.add(newUser, (error, data) => {
     res.end();
   });
 });
@@ -44,8 +44,9 @@ router.delete('/:id', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-  const obj = req.body;
-  userService.findAndUpdate(Number(req.params.id), obj, (error, data) => {
+  const newUserData = req.body;
+  console.log(newUserData);
+  userService.findAndUpdate(Number(req.params.id), newUserData, (error, data) => {
     if (!error){
       res.json(res.data);
     } else {

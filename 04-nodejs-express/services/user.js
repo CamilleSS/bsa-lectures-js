@@ -1,40 +1,35 @@
 const users = [{
-  id: 1,
-  name: "Marge",
-  email: "marge@gmail.com",
-  birthdate: "01/01/1970"
+  "id": 1,
+  "name": "Marge",
+  "email": "marge@gmail.com"
 }, {
-  id: 2,
-  name: 'Homer',
-  email: "homer@gmail.com",
-  birthdate: "20/08/1960"
+  "id": 2,
+  "name": "Homer",
+  "email": "homer@gmail.com"
 }, {
-  id: 3,
-  name: 'Bart',
-  email: "bart@gmail.com",
-  birthdate: "31/07/1980"
+  "id": 3,
+  "name": "Bart",
+  "email": "bart@gmail.com"
 }, {
-  id: 4,
-  name: "Lisa",
-  email: "lisa@gmail.com",
-  birthdate: "15/03/1982"
+  "id": 4,
+  "name": "Lisa",
+  "email": "lisa@gmail.com"
 }, {
-  id: 5,
-  name: "Maggie",
-  email: "maggie@gmail.com",
-  birthdate: "01/12/1990"
+  "id": 5,
+  "name": "Maggie",
+  "email": "maggie@gmail.com"
 }];
 
-const findUser = id => {
+const findUser = userId => {
   let error = null;
-  if (!(Number.isInteger(id) && id > 0)) {
+  if (!(Number.isInteger(userId) && userId > 0)) {
     error = new Error('Id is not valid');
   }
 
   let index;
-  let user = users.find((el, id) => {
-    if (el.id === id) {
-      index = id;
+  let user = users.find((el, pos) => {
+    if (el.id === userId) {
+      index = pos;
       return true;
     } else {
       return false;
@@ -55,7 +50,7 @@ module.exports = {
   },
 
   add: (user, callback) => {
-    if (!(Number.isInteger(user.id) && user.id > 0)) {
+    if (Number.isInteger(user.id) && user.id > 0) {
       users.push(user);
       callback(null);
     } else {
@@ -65,18 +60,16 @@ module.exports = {
 
   findAndDelete: (id, callback) => {
     let {error, user, index} = findUser(id);
-    if (!(Number.isInteger(index) && index > 0)) {
+    if (Number.isInteger(index) && index > 0) {
       users.splice(index, 1);
     } else {
-      error = new Error('Id is not valid');
-      // callback(new Error('Id is not valid'));
+      callback(new Error('Id is not valid'));
     }
-    callback(error);
   },
 
-  findAndUpdate: (id, user, callback) => {
+  findAndUpdate: (id, userData, callback) => {
     let {error, index} = findUser(id);
-    users[index] = Object.assign(users[index], user);
+    users[index] = Object.assign(users[index], userData);
     callback(error);
   }
 };
