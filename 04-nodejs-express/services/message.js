@@ -30,16 +30,16 @@ const messages = [{
   "messageText": "XHZJufhcjsdkfvJ{C{LSNM"
 }];
 
-const findMessage = id => {
+const findMessage = messageId => {
   let error = null;
-  if (!(Number.isInteger(id) && id > 0)) {
+  if (!(Number.isInteger(messageId) && messageId > 0)) {
     error = new Error('Id is not valid');
   }
 
   let index;
-  let message = messages.find((el, id) => {
-    if (el.id === id) {
-      index = id;
+  let message = messages.find((el, pos) => {
+    if (el.id === messageId) {
+      index = pos;
       return true;
     } else {
       return false;
@@ -60,7 +60,7 @@ module.exports = {
   },
 
   add: (message, callback) => {
-    if (!(Number.isInteger(message.id) && message.id > 0)) {
+    if (Number.isInteger(message.id) && message.id > 0) {
       messages.push(message);
       callback(null);
     } else {
@@ -70,18 +70,17 @@ module.exports = {
 
   findAndDelete: (id, callback) => {
     let {error, message, index} = findMessage(id);
-    if (!(Number.isInteger(index) && index > 0)) {
+    if (Number.isInteger(index) && index > 0) {
       messages.splice(index, 1);
     } else {
       error = new Error('Id is not valid');
-      // callback(new Error('Id is not valid'));
     }
     callback(error);
   },
 
-  findAndUpdate: (id, message, callback) => {
-    let {error, index} = findMessages(id);
-    messages[index] = Object.assign(messages[index], message);
+  findAndUpdate: (id, messageData, callback) => {
+    let {error, index} = findMessage(id);
+    messages[index] = Object.assign(messages[index], messageData);
     callback(error);
   }
 };

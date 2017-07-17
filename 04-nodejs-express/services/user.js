@@ -63,8 +63,9 @@ module.exports = {
     if (Number.isInteger(index) && index > 0) {
       users.splice(index, 1);
     } else {
-      callback(new Error('Id is not valid'));
+      error = new Error('Id is not valid');
     }
+    callback(error);
   },
 
   findAndUpdate: (id, userData, callback) => {

@@ -20,20 +20,21 @@ router.get('/:id', (req, res, next) => {
       res.json(res.data);
     } else {
       res.status(400);
+      res.end();
     }
   });
 });
 
 router.post('/', (req, res, next) => {
-  const obj = req.body;
-  messageService.add(obj, (error, data) => {
+  const newMessage = req.body;
+  messageService.add(newMessage, (error, data) => {
     res.end();
   });
 });
 
 router.delete('/:id', (req, res, next) => {
   messageService.findAndDelete(Number(req.params.id), (error, data) => {
-    if (!err){
+    if (!error){
       res.json(res.data);
     } else {
       res.status(400);
@@ -43,9 +44,9 @@ router.delete('/:id', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-  const obj = req.body;
-  messageService.findAndUpdate(Number(req.params.id), obj, (error, data) => {
-    if (!err){
+  const newMessageData = req.body;
+  messageService.findAndUpdate(Number(req.params.id), newMessageData, (error, data) => {
+    if (!error){
       res.json(res.data);
     } else {
       res.status(400);

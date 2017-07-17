@@ -45,7 +45,6 @@ router.delete('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   const newUserData = req.body;
-  console.log(newUserData);
   userService.findAndUpdate(Number(req.params.id), newUserData, (error, data) => {
     if (!error){
       res.json(res.data);
