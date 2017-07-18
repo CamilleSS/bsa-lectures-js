@@ -1,8 +1,10 @@
 ## Usage
 
 1. npm install
-2. node ./
-3. go to localhost:5000 in browser
+2. mongod
+3. mongo
+4. node ./
+5. go to localhost:5000 in browser
 
 ## Routes
 
