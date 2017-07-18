@@ -42,4 +42,4 @@
 * **DELETE /api/message/id** - delete a specific message
 
 ### User History
-* **GET /api/user-history/id** - read the list of all users with whom a specific user has been messaging
+* **GET /api/user/id/history** - read the list of all users with whom a specific user has been messaging
