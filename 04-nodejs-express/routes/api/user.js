@@ -7,6 +7,7 @@ router.get('/', (req, res, next) => {
       res.data = data;
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -19,6 +20,7 @@ router.get('/:id', (req, res, next) => {
       res.data = data;
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -31,6 +33,7 @@ router.post('/', (req, res, next) => {
     if (!error){
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -42,6 +45,7 @@ router.delete('/:id', (req, res, next) => {
     if (!error){
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -54,6 +58,7 @@ router.put('/:id', (req, res, next) => {
     if (!error){
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -66,6 +71,7 @@ router.get('/:id/history', (req, res, next) => {
       res.data = data;
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }

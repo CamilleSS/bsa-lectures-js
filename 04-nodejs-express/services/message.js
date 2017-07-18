@@ -23,12 +23,20 @@ module.exports = {
   },
 
   add: (doc, callback) => {
-    db.get().collection('message').insertOne(doc, (error, result) => {
-      if (error) {
-        callback(error);
-      }
-      callback(null);
-    });
+    if (doc.hasOwnProperty('senderId') && doc.hasOwnProperty('receiverId')) {
+      db.get().collection('message').insertOne(
+        {senderId: doc.senderId,
+        receiverId: doc.receiverId,
+        messageText: doc.messageText},
+        (error, result) => {
+          if (error) {
+            callback(error);
+          }
+          callback(null);
+        });
+    } else {
+      callback(new Error('Some fields weren\'t specified'));
+    }
   },
 
   findAndDelete: (id, callback) => {
@@ -43,16 +51,20 @@ module.exports = {
   },
 
   findAndUpdate: (id, data, callback) => {
-    db.get().collection('message').updateOne(
-      {_id: ObjectId(id)},
-      {senderId: data.senderId},
-      {receiverId: data.receiverId},
-      {messageText: data.messageText},
-      (error, result) => {
-        if (error) {
-          callback(error);
-        }
-        callback(null);
-      });
+    if (data.hasOwnProperty('senderId') && data.hasOwnProperty('receiverId')) {
+      db.get().collection('message').updateOne(
+        {_id: ObjectId(id)},
+        {senderId: data.senderId,
+          receiverId: data.receiverId,
+          messageText: data.messageText},
+        (error, result) => {
+          if (error) {
+            callback(error);
+          }
+          callback(null);
+        });
+    } else {
+      callback(new Error('Some fields weren\'t specified'));
+    }
   }
 };

@@ -7,6 +7,7 @@ router.get('/', (req, res, next) => {
       res.data = data;
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -19,6 +20,7 @@ router.get('/:id', (req, res, next) => {
       res.data = data;
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -28,7 +30,13 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const newMessage = req.body;
   messageService.add(newMessage, (error, data) => {
-    res.end();
+    if (!error){
+      res.json(res.data);
+    } else {
+      console.log(error);
+      res.status(400);
+      res.end();
+    }
   });
 });
 
@@ -37,6 +45,7 @@ router.delete('/:id', (req, res, next) => {
     if (!error){
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }
@@ -49,6 +58,7 @@ router.put('/:id', (req, res, next) => {
     if (!error){
       res.json(res.data);
     } else {
+      console.log(error);
       res.status(400);
       res.end();
     }

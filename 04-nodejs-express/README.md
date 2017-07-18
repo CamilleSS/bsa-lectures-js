@@ -11,7 +11,7 @@
 ### Users
 
 ```javascript
-// data sample
+// data sample; name is required
 {
   "name": "Kenny",
   "email": "kenny@gmail.com"
@@ -27,7 +27,7 @@
 ### Messages
 
 ```javascript
-// data sample
+// data sample; senderId and receiverId are required
 {
   "senderId": 5,
   "receiverId": 10,

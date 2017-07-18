@@ -23,12 +23,19 @@ module.exports = {
   },
 
   add: (doc, callback) => {
-    db.get().collection('user').insertOne(doc, (error, result) => {
-      if (error) {
-        callback(error);
-      }
-      callback(null);
-    });
+    if (doc.hasOwnProperty('name')) {
+      db.get().collection('user').insertOne(
+        {name: doc.name,
+        email: doc.email},
+        (error, result) => {
+          if (error) {
+            callback(error);
+          }
+          callback(null);
+        });
+    } else {
+      callback(new Error('Name wasn\'t specified'));
+    }
   },
 
   findAndDelete: (id, callback) => {
@@ -43,16 +50,20 @@ module.exports = {
   },
 
   findAndUpdate: (id, data, callback) => {
-    db.get().collection('user').updateOne(
-      {_id: ObjectId(id)},
-      {name: data.name},
-      {email: data.email},
-      (error, result) => {
-        if (error) {
-          callback(error);
-        }
-        callback(null);
-      });
+    if (data.hasOwnProperty('name')) {
+      db.get().collection('user').updateOne(
+        {_id: ObjectId(id)},
+        {name: data.name,
+        email: data.email},
+        (error, result) => {
+          if (error) {
+            callback(error);
+          }
+          callback(null);
+        });
+    } else {
+      callback(new Error('Name wasn\'t specified'));
+    }
   },
 
   findOtherUsers: (id, callback) => {
