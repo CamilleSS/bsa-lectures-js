@@ -1,15 +1,23 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const db = require('./db');
 
 const app = express();
 
-const staticPath = path.join(__dirname, 'public');
-app.use(express.static(staticPath));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+});
 
 const routes = require('./routes/api/routes')(app);
-const server = app.listen(5000, () => {
-  console.log('Server is running on localhost:5000');
+
+db.connect('mongodb://localhost:27017/api', (error) => {
+  if (error) {return console.log(error)}
+
+  app.listen(5000, () => {
+    console.log('Server is running on localhost:5000');
+  });
 });

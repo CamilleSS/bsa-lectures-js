@@ -1,76 +1,99 @@
-const users = [{
-  "id": 1,
-  "name": "Marge",
-  "email": "marge@gmail.com"
-}, {
-  "id": 2,
-  "name": "Homer",
-  "email": "homer@gmail.com"
-}, {
-  "id": 3,
-  "name": "Bart",
-  "email": "bart@gmail.com"
-}, {
-  "id": 4,
-  "name": "Lisa",
-  "email": "lisa@gmail.com"
-}, {
-  "id": 5,
-  "name": "Maggie",
-  "email": "maggie@gmail.com"
-}];
-
-const findUser = userId => {
-  let error = null;
-  if (!(Number.isInteger(userId) && userId > 0)) {
-    error = new Error('Id is not valid');
-  }
-
-  let index;
-  let user = users.find((el, pos) => {
-    if (el.id === userId) {
-      index = pos;
-      return true;
-    } else {
-      return false;
-    }
-  });
-
-  return {user, index, error};
-};
+const db = require('../db');
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
   findAll: callback => {
-    callback(null, users);
+    db.get().collection('user').find().toArray((error, docs) => {
+      if (error) {
+        callback(error);
+      }
+      callback(null, docs);
+    });
   },
 
   findOne: (id, callback) => {
-    let {error, user} = findUser(id);
-    callback(error, user);
+    db.get().collection('user').findOne(
+      {_id: ObjectId(id)},
+      (error, doc) => {
+        if (error) {
+          callback(error);
+        }
+        callback(null, doc);
+      });
   },
 
-  add: (user, callback) => {
-    if (Number.isInteger(user.id) && user.id > 0) {
-      users.push(user);
+  add: (doc, callback) => {
+    db.get().collection('user').insertOne(doc, (error, result) => {
+      if (error) {
+        callback(error);
+      }
       callback(null);
-    } else {
-      callback(new Error('Id is not valid'));
-    }
+    });
   },
 
   findAndDelete: (id, callback) => {
-    let {error, user, index} = findUser(id);
-    if (Number.isInteger(index) && index > 0) {
-      users.splice(index, 1);
-    } else {
-      error = new Error('Id is not valid');
-    }
-    callback(error);
+    db.get().collection('user').deleteOne(
+      {_id: ObjectId(id)},
+      (error, result) => {
+        if (error) {
+          callback(error);
+        }
+        callback(null);
+      });
   },
 
-  findAndUpdate: (id, userData, callback) => {
-    let {error, index} = findUser(id);
-    users[index] = Object.assign(users[index], userData);
-    callback(error);
+  findAndUpdate: (id, data, callback) => {
+    db.get().collection('user').updateOne(
+      {_id: ObjectId(id)},
+      {name: data.name},
+      {email: data.email},
+      (error, result) => {
+        if (error) {
+          callback(error);
+        }
+        callback(null);
+      });
+  },
+
+  findOtherUsers: (id, callback) => {
+    db.get().collection('message').find(
+      {$or: [{senderId: id}, {receiverId: id}]}
+    ).toArray((error, docs) => {
+      if (error) {
+        callback(error);
+      }
+
+      let foundMessages = docs;
+      let otherUserIds = [];
+
+      foundMessages.forEach(message => {
+        if (message.senderId === id) {
+          otherUserId = ObjectId(message.receiverId);
+        } else if (message.receiverId === id) {
+          otherUserId = ObjectId(message.senderId);
+        }
+        otherUserIds.push(otherUserId);
+      });
+
+      db.get().collection('user').find(
+        {_id: {$in: otherUserIds}}
+      ).toArray((error, docs) => {
+        if (error) {
+          callback(error);
+        }
+        callback(null, docs);
+      });
+    });
+  },
+
+  findMessages: (id, callback) => {
+    db.get().collection('message').find(
+      {senderId: id}
+    ).toArray((error, docs) => {
+      if (error) {
+        callback(error);
+      }
+      callback(null, docs);
+    });
   }
 };

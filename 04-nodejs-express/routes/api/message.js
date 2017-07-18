@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  messageService.findOne(Number(req.params.id), (error, data) => {
+  messageService.findOne(req.params.id, (error, data) => {
     if (!error) {
       res.data = data;
       res.json(res.data);
@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-  messageService.findAndDelete(Number(req.params.id), (error, data) => {
+  messageService.findAndDelete(req.params.id, (error, data) => {
     if (!error){
       res.json(res.data);
     } else {
@@ -45,7 +45,7 @@ router.delete('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   const newMessageData = req.body;
-  messageService.findAndUpdate(Number(req.params.id), newMessageData, (error, data) => {
+  messageService.findAndUpdate(req.params.id, newMessageData, (error, data) => {
     if (!error){
       res.json(res.data);
     } else {
