@@ -84,16 +84,5 @@ module.exports = {
         callback(null, docs);
       });
     });
-  },
-
-  findMessages: (id, callback) => {
-    db.get().collection('message').find(
-      {senderId: id}
-    ).toArray((error, docs) => {
-      if (error) {
-        callback(error);
-      }
-      callback(null, docs);
-    });
   }
 };

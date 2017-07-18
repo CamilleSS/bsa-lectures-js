@@ -13,7 +13,6 @@
 ```javascript
 // data sample
 {
-  "id": 15,
   "name": "Kenny",
   "email": "kenny@gmail.com"
 }
@@ -30,7 +29,6 @@
 ```javascript
 // data sample
 {
-  "id": 50,
   "senderId": 5,
   "receiverId": 10,
   "messageText": "abyrvalg"
