@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat [AJAX]</title>
+  <link href="https://fonts.googleapis.com/css?family=Assistant|Quicksand" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <div id="userdata">
+    <div id="userdata-heading">
+      <h2>Hey, what's your name?</h2>
+    </div>
+    <label for="username">Username:</label>
+    <input id="username" type="text" name="username" placeholder="username">
+    <label for="nickname">Nickname:</label>
+    <input id="nickname" type="text" name="nickname" placeholder="nickname">
+    <button id="save-userdata" type="button">OK</button>
+  </div>
+
+  <div id="chat-box">
+    <div id="chat-heading">
+      <h2>Chat</h2>
+      <h3 id="set-username"></h3>
+    </div>
+    <div id="main-chat-block">
+      <div id="user-list"></div>
+      <div id="message-list"></div>
+    </div>
+
+    <div id="message-form">
+      <textarea id="message" name="message" placeholder="message text" rows="4" cols="50"></textarea>
+      <button id="send-message" type="button">Send message</button>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
