@@ -18,7 +18,11 @@ const sendMessageButton = document.getElementById('send-message');
 
 const socket = io.connect();
 
-let id = 0;
+let username;
+let nickname;
+let presence;
+
+let userId;
 let statusTimeout = null;
 let userStatusColor = {
   appeared: '#f1f26b',
@@ -28,61 +32,88 @@ let userStatusColor = {
 
 (() => {
   saveUserdataButton.addEventListener('click', () => {
-    let username = usernameField.value;
-    let nickname = nicknameField.value;
-    let presence = 'appeared';
-    let userId = id;
-    let data = {username, nickname, presence, userId};
+    let validData = true;
+    username = usernameField.value;
+    nickname = nicknameField.value;
+    presence = 'appeared';
 
-    socket.emit('chat user', data);
+    if (username.length < 3 || nickname.length < 3) {
+      validData = false;
+      userdataError.style.display = 'block';
+    }
 
-    setUsername.innerHTML = `Your username: ${username}`;
-    sessionStorage.setItem('userId', userId);
-    sessionStorage.setItem('username', username);
-    sessionStorage.setItem('presence', presence);
-    id++;
-  });
-
-  sendMessageButton.addEventListener('click', () => {
-    let messageText = messageField.value;
-    let time = new Date().getTime();
-    let username = sessionStorage.username;
-    console.log(username);
-    let data = {username, nickname, time, messageText};
-    socket.emit('chat message', data);
-  });
-
-  // fetch the list of users
-  socket.on('chat users', data => {
-    removeChildren(userList);
-    for (let i = 0; i < data.length; i++) {
-      createUserElement(data[i], userList);
+    if (validData) {
+      let data = {username, nickname, presence};
+      socket.emit('chat user', data);
     }
   });
 
+  socket.on('valid user', id => {
+    userdataError.style.display = 'none';
+    setUsername.innerHTML = `Your username: ${username}`;
+    chatBox.style.display = 'block';
+    userdata.style.display = 'none';
+
+    userId = id;
+    console.log(userId);
+  });
+
   socket.on('chat user', data => {
+    userList.style.display = 'block';
     createUserElement(data, userList);
-    statusTimeout = setTimeout(() => {
-      let userId = sessionStorage.userId;
-      let presence = 'online';
-      let userStatus = document.querySelector(`.user[userId="${userId}"] .status`);
-      console.log(presence);
-      userStatus.style.backgroundColor = userStatusColor[presence];
-    }, 3000);
+  });
+
+  socket.on('not valid user', error => {
+    userdataError.innerHTML = error;
+    userdataError.style.display = 'block';
+  });
+
+  sendMessageButton.addEventListener('click', () => {
+    let validData = true;
+    let messageText = messageField.value;
+
+    if (validData) {
+      let time = new Date().getTime();
+      let data = {username, nickname, time, messageText};
+      socket.emit('chat message', data);
+      messageError.style.display = 'none';
+      messageField.value = '';
+    }
+  });
+
+  socket.on('chat message', data => {
+    messageList.style.display = 'block';
+    createMessageElement(data, messageList);
+    if (messageList.childElementCount > 100) {
+      messageList.removeChild(messageList.childNodes[0]);
+    }
+  });
+
+  socket.on('not valid message', error => {
+    messageError.innerHTML = error;
+    messageError.style.display = 'block';
+  });
+
+  // fetch the list of users
+  socket.on('chat users', users => {
+    if (users.length > 0) {
+      userList.style.display = 'block';
+    }
+    removeChildren(userList);
+    for (let i = 0; i < users.length; i++) {
+      createUserElement(users[i], userList);
+    }
   });
 
   // change status and send a message on user leaving
   window.addEventListener('beforeunload', () => {
-    let userId = sessionStorage.userId;
     socket.emit('leaving', userId);
+    socket.close();
   });
 
   socket.on('leaving', userId => {
-    console.log(document.querySelector(`.user[userId="${userId}"] .status`), userId);
-    let userStatus = document.querySelector(`.user[userId="${userId}"] .status`);
-    let userElement = userStatus.parentElement;
-    let username = userElement.querySelector('.username').innerHTML;
-    console.log(userElement, username);
+    let userElement = userList.querySelectorAll('.user')[userId];
+    let userStatus = userElement.querySelector('.status');
     userStatus.style.backgroundColor = userStatusColor.offline;
 
     let message = constructElement(null, 'div', 'message', '', null, false);
@@ -92,11 +123,9 @@ let userStatusColor = {
     message.appendChild(sender);
     let timeAmount = new Date().getTime();
     let date = new Date(timeAmount);
-    console.log(date);
     let time = document.createElement('div');
     time.className = 'time';
     time.innerHTML = date.toLocaleString();
-    console.log(time);
     message.appendChild(time);
     let text = document.createElement('div');
     text.className = 'text';
@@ -108,41 +137,35 @@ let userStatusColor = {
   });
 
   // fetch the list of messages
-  socket.on('chat history', data => {
+  socket.on('chat history', messages => {
+    if (messages.length > 0) {
+      messageList.style.display = 'block';
+    }
     removeChildren(messageList);
-    for (let i = 0; i < data.length; i++) {
-      createMessageElement(data[i], messageList);
+    for (let i = 0; i < messages.length; i++) {
+      createMessageElement(messages[i], messageList);
     }
-  });
-
-  socket.on('chat message', data => {
-    createMessageElement(data, messageList);
-    if (messageList.childElementCount > 100) {
-      messageList.removeChild(messageList.childNodes[0]);
-    }
-    console.log(messageList.childElementCount);
   });
 
   // display if someone is typing a message
   let typingTimeout = null;
 
   messageField.addEventListener('keydown', () => {
-    let data = sessionStorage.username;
-    socket.emit('typing', data);
+    socket.emit('typing', username);
   });
 
-  socket.on('typing', data => {
-    typingStatus.innerHTML = `${data} is typing`;
+  socket.on('typing', user => {
+    typingStatus.innerHTML = `${user} is typing`;
     clearTimeout(typingTimeout);
     typingTimeout = setTimeout(() => {
       typingStatus.innerHTML = '';
-    }, 2000);
+    }, 1500);
   });
 })();
 
 const createUserElement = (data, parentElement) => {
   let user;
-  user = constructElement(data, 'div', 'user', 'user', null, false);
+  user = constructElement(data, 'div', 'user', null, null, false);
   let username = constructElement(data, 'div', 'username', 'username', user);
   let status = constructElement(data, 'div', 'status', 'status', user);
   let nickname = constructElement(data, 'div', 'nickname', 'nickname', user);
@@ -155,16 +178,23 @@ const createMessageElement = (data, parentElement) => {
   let sender = constructElement(data, 'div', 'sender', 'sender', message);
   let time = constructElement(data, 'div', 'time', 'time', message);
   let text = constructElement(data, 'div', 'text', 'text', message);
+
+  if (text.innerHTML.includes(`@${username}`)) {
+    message.style.backgroundColor = '#fff2b7';
+  }
   parentElement.appendChild(message);
 };
 
 // individual options for element handling
 const prepareElement = {
-  'user': (element, data) => {
-    element.setAttribute('userId', data.userId);
-  },
   'username': (element, data) => element.innerHTML = data.username,
-  'status': (element, data) => element.style.backgroundColor = userStatusColor[data.presence],
+  'status': (element, data) => {
+    statusTimeout = setTimeout(() => {
+      presence = 'online';
+      element.style.backgroundColor = userStatusColor[presence];
+    }, 5000);
+    element.style.backgroundColor = userStatusColor[data.presence];
+  },
   'nickname': (element, data) => element.innerHTML = `@${data.nickname}`,
   'sender': (element, data) => element.innerHTML = `${data.username} @${data.nickname}`,
   'time': (element, data) => {

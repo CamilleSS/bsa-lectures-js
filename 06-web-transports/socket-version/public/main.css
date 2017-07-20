@@ -19,7 +19,20 @@ body, input, textarea, button {
   width: 700px;
   margin-bottom: 40px;
   padding: 40px;
+  text-align: center;
   background: #dcfff1;
+}
+
+#username, #nickname {
+  display: block;
+  width: 200px;
+  height: 30px;
+  margin: 20px auto;
+}
+
+#save-userdata {
+  width: 70px;
+  height: 40px;
 }
 
 #chat-box {
@@ -78,6 +91,14 @@ h2, h3 {
 
 .message:last-child {
   margin-bottom: 40px;
+}
+
+.time {
+  text-align: right;
+}
+
+.text {
+  margin-top: 10px;
 }
 
 #message-form {

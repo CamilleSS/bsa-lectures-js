@@ -24,8 +24,11 @@ io.on('connect', socket => {
 
   socket.on('chat user', user => {
     let validData = true;
+    let errorMessage;
     if (user.username.length < 3 || user.nickname.length < 3) {
       validData = false;
+      errorMessage = 'Username and nickname should contain at least 3 characters';
+      socket.emit('not valid user', errorMessage);
     }
 
     if (validData) {
@@ -33,13 +36,17 @@ io.on('connect', socket => {
         if (users[i].username === user.username ||
           users[i].nickname === user.nickname) {
           validData = false;
-          console.log('Data is not valid');
+          errorMessage = 'Username or nickname are already taken';
+          socket.emit('not valid user', errorMessage);
+          break;
         }
       }
     }
 
     if (validData) {
+      let id = users.length;
       users.push(user);
+      socket.emit('valid user', id);
       io.emit('chat user', user);
     }
   });
@@ -48,7 +55,8 @@ io.on('connect', socket => {
     let validData = true;
     if (msg.messageText.length < 3) {
       validData = false;
-      console.log('Data is not valid');
+      errorMessage = 'Message should contain at least 3 characters';
+      socket.emit('not valid message', errorMessage);
     }
 
     if (validData) {
