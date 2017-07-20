@@ -24,7 +24,7 @@ let presence;
 
 let userId;
 let userListLength;
-let statusTimeout = null;
+let statusTimeout;
 let userStatusColor = {
   appeared: '#f1f26b',
   online: '#2df25d',
@@ -144,6 +144,7 @@ let userStatusColor = {
     messageList.appendChild(message);
     console.log(message);
 
+    messageList.style.display = 'block';
     clearTimeout(statusTimeout);
   });
 
@@ -207,7 +208,7 @@ const prepareElement = {
       statusTimeout = setTimeout(() => {
         presence = 'online';
         element.style.backgroundColor = userStatusColor[presence];
-      }, 5000);
+      }, 60000);
     // }
     element.style.backgroundColor = userStatusColor[data.presence];
   },
