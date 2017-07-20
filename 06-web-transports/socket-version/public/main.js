@@ -23,6 +23,7 @@ let nickname;
 let presence;
 
 let userId;
+let userListLength;
 let statusTimeout = null;
 let userStatusColor = {
   appeared: '#f1f26b',
@@ -31,6 +32,11 @@ let userStatusColor = {
 };
 
 (() => {
+  window.removeEventListener('beforeunload', () => {});
+  socket.on('user list length', length => {
+    userListLength = length;
+  });
+
   saveUserdataButton.addEventListener('click', () => {
     let validData = true;
     username = usernameField.value;
@@ -54,9 +60,15 @@ let userStatusColor = {
     chatBox.style.display = 'block';
     userdata.style.display = 'none';
 
+    console.log(id);
     userId = id;
-    console.log(userId);
-  });
+    window.addEventListener('beforeunload', () => {
+      if (Number.isInteger(userId)) {
+        socket.emit('leaving', userId);
+      }
+      socket.close();
+    });
+});
 
   socket.on('chat user', data => {
     userList.style.display = 'block';
@@ -106,11 +118,6 @@ let userStatusColor = {
   });
 
   // change status and send a message on user leaving
-  window.addEventListener('beforeunload', () => {
-    socket.emit('leaving', userId);
-    socket.close();
-  });
-
   socket.on('leaving', userId => {
     let userElement = userList.querySelectorAll('.user')[userId];
     let userStatus = userElement.querySelector('.status');
@@ -159,7 +166,7 @@ let userStatusColor = {
     clearTimeout(typingTimeout);
     typingTimeout = setTimeout(() => {
       typingStatus.innerHTML = '';
-    }, 1500);
+    }, 1000);
   });
 })();
 
@@ -189,10 +196,13 @@ const createMessageElement = (data, parentElement) => {
 const prepareElement = {
   'username': (element, data) => element.innerHTML = data.username,
   'status': (element, data) => {
-    statusTimeout = setTimeout(() => {
-      presence = 'online';
-      element.style.backgroundColor = userStatusColor[presence];
-    }, 5000);
+    socket.emit('user list length');
+    if (userListLength === userId || userId === 0) {
+      statusTimeout = setTimeout(() => {
+        presence = 'online';
+        element.style.backgroundColor = userStatusColor[presence];
+      }, 5000);
+    }
     element.style.backgroundColor = userStatusColor[data.presence];
   },
   'nickname': (element, data) => element.innerHTML = `@${data.nickname}`,
