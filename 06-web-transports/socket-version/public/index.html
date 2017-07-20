@@ -12,6 +12,7 @@
     <div id="userdata-heading">
       <h2>Hey, what's your name?</h2>
     </div>
+    <p id="userdata-error">Username and nickname should contain at least 3 characters</p>
     <label for="username">Username:</label>
     <input id="username" type="text" name="username" placeholder="username">
     <label for="nickname">Nickname:</label>
@@ -31,8 +32,9 @@
 
     <div id="message-form">
       <div id="typing-status"></div>
-      <textarea id="message" name="message" placeholder="message text" rows="4" cols="50"></textarea>
-      <button id="send-message" type="button">Send message</button>
+      <p id="message-error">Message should contain at least 3 characters</p>
+      <textarea id="message-field" name="message" placeholder="message text" rows="4" cols="80"></textarea>
+      <button id="send-message" type="button">Send</button>
     </div>
   </div>
 

@@ -1,132 +1,127 @@
 'use strict';
 
+const userdataError = document.getElementById('userdata-error');
+const messageError = document.getElementById('message-error');
+
+const userdata = document.getElementById('userdata');
+const usernameField = document.getElementById('username');
+const nicknameField = document.getElementById('nickname');
+const saveUserdataButton = document.getElementById('save-userdata');
+const userList = document.getElementById('user-list');
+
+const chatBox = document.getElementById('chat-box');
+const setUsername = document.getElementById('set-username');
+const messageList = document.getElementById('message-list');
+const messageField = document.getElementById('message-field');
+const sendMessageButton = document.getElementById('send-message');
+
+let username;
+let nickname;
+
+// handle ajax requests
+const ajaxRequest = (
+  url = '/',
+  method = 'GET',
+  callback = () => {},
+  data = {},
+  xmlHttp = new XMLHttpRequest()
+) => {
+  xmlHttp.open(method, url, true);
+  xmlHttp.setRequestHeader('Content-Type', 'application/json');
+  xmlHttp.send(JSON.stringify(data));
+
+  xmlHttp.onreadystatechange = () => {
+    if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
+      callback(xmlHttp.responseText);
+    }
+  }
+};
+
+// fetch the list of users
+const getUsers = () => {
+  ajaxRequest('/users', 'GET', users => {
+    if (users.length > 0) {
+      userList.style.display = 'block';
+    }
+
+    users = JSON.parse(users);
+    removeChildren(userList);
+    for (let i in users) {
+      if (users.hasOwnProperty(i)) {
+        let user = constructElement(null, 'div', 'user', '', null, false);
+        let username = constructElement(users[i], 'div', 'username', 'username', user);
+        let nickname = constructElement(users[i], 'div', 'nickname', 'nickname', user);
+        userList.appendChild(user);
+      }
+    }
+  });
+};
+
+// fetch the list of messages
+const getMessages = () => {
+  ajaxRequest('/messages', 'GET', messages => {
+    if (messages.length > 0) {
+      messageList.style.display = 'block';
+    }
+
+    messages = JSON.parse(messages);
+    removeChildren(messageList);
+    for (let i in messages) {
+      if (messages.hasOwnProperty(i)) {
+        let message = constructElement(null, 'div', 'message', '', null, false);
+        let sender = constructElement(messages[i], 'div', 'sender', 'sender', message);
+        let time = constructElement(messages[i], 'div', 'time', 'time', message);
+        let text = constructElement(messages[i], 'div', 'text', 'text', message);
+
+        if (text.innerHTML.includes(`@${username}`)) {
+          message.style.backgroundColor = '#fff2b7';
+        }
+        messageList.appendChild(message);
+      }
+    }
+  });
+};
+
 (() => {
-  const userdataHeading = document.querySelector('#userdata-heading h2');
-  const usernameField = document.getElementById('username');
-  const nicknameField = document.getElementById('nickname');
-  const saveUserdataButton = document.getElementById('save-userdata');
-  const userList = document.getElementById('user-list');
-  const setUsername = document.getElementById('set-username');
-  const messageList = document.getElementById('message-list');
-  const messageField = document.getElementById('message');
-  const sendMessageButton = document.getElementById('send-message');
-
-  let username;
-  let nickname;
-  let messageText;
-
   saveUserdataButton.addEventListener('click', () => {
-    username = usernameField.value || 'Username';
+    let validData = true;
+    username = usernameField.value;
     nickname = nicknameField.value;
-    let data = {username, nickname};
 
-    console.log('CLICK', data);
+    if (username.length < 3 || nickname.length < 3) {
+      validData = false;
+      userdataError.style.display = 'block';
+    }
 
-    fetch('/users', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(console.log('SENT DATA'));
-
-    userdataHeading.innerHTML = `Hello ${username}!`;
-    setUsername.innerHTML = `Your username: ${username}`;
+    if (validData) {
+      let data = {username, nickname};
+      ajaxRequest('/users', 'POST', () => {
+        userdataError.style.display = 'none';
+        setUsername.innerHTML = `Your username: ${username}`;
+        chatBox.style.display = 'block';
+        userdata.style.display = 'none';
+      }, data);
+    }
   });
 
   sendMessageButton.addEventListener('click', () => {
-    messageText = messageField.value;
-    let time = new Date().getTime();
-    let data = {username, nickname, time, messageText};
+    let validData = true;
+    let messageText = messageField.value;
 
-    fetch('/messages', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(messageField.value = '')
-  });
-
-  // fetch the list of users
-  const getUsers = () => {
-    console.log('getUsers INIT');
-    const fetchData = fetch('/users', {
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(status)
-      .then(json)
-      .catch(error => {
-        console.log(
-          `There was a problem with fetching the data. ${error}`
-        );
-      });
-
-    fetchData.then(data => {
-      // if (data.length) {
-      //   userList.style.display = 'block';
-      // }
-
-      console.log('GOT DATA');
-
-      removeChildren(userList);
-      let user;
-
-      for (let i = 0; i < data.length; i++) {
-        user = constructElement(null, 'div', 'user', '', null, false);
-        let username = constructElement(data[i], 'div', 'username', 'username', user);
-        let nickname = constructElement(data[i], 'div', 'nickname', 'nickname', user);
-        userList.appendChild(user);
-        console.log(user);
-      }
-    });
-  };
-
-  // fetch the list of messages
-  const getMessages = () => {
-    const fetchData = fetch('/messages', {
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(status)
-      .then(json)
-      .catch(error => {
-        console.log(
-          `There was a problem with fetching the data. ${error}`
-        );
-      });
-
-    fetchData.then(data => {
-      // if (data.length) {
-      //   messageList.style.display = 'block';
-      // }
-
-      removeChildren(messageList);
-      let message;
-
-      for (let i = 0; i < data.length; i++) {
-        message = constructElement(null, 'div', 'message', '', null, false);
-        let sender = constructElement(data[i], 'div', 'sender', 'sender', message);
-        let time = constructElement(data[i], 'div', 'time', 'time', message);
-        let text = constructElement(data[i], 'div', 'text', 'text', message);
-        messageList.appendChild(message);
-      }
-    });
-  };
-
-  let status = response => {
-    // if (response.status >= 200 && response.status < 300) {
-    if (response.status === 200) {
-      return Promise.resolve(response);
-    } else {
-      return Promise.reject(new Error(response.statusText));
+    if (messageText.length < 3) {
+      validData = false;
+      messageError.style.display = 'block';
     }
-  };
 
-  let json = response => {
-    return response.json();
-  };
+    if (validData) {
+      let time = new Date().getTime();
+      let data = {username, nickname, time, messageText};
+      ajaxRequest('/messages', 'POST', () => {
+        messageError.style.display = 'none';
+        messageField.value = '';
+      }, data);
+    }
+  });
 
   getUsers();
   getMessages();
@@ -135,7 +130,6 @@
     getMessages();
   }, 1000);
 })();
-
 
 // individual options for element handling
 const prepareElement = {
@@ -163,6 +157,7 @@ let constructElement = (data,
   return element;
 };
 
+// remove all children nodes from the parent element
 const removeChildren = element => {
   while (element.hasChildNodes()) {
     element.removeChild(element.childNodes[0]);

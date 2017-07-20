@@ -19,28 +19,58 @@ app.get('/main.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'main.js'));
 });
 
-app.get('/messages', (req, res) => {
-  console.log('messages:', messages.length);
-  res.json(messages);
-});
-
-app.post('/messages', (req, res) => {
-  console.log('messages:', messages.length);
-  if (messages.length === 100) {
-    messages.shift();
-  }
-  messages.push(req.body);
-});
-
 app.get('/users', (req, res) => {
   res.json(users);
+  res.end();
 });
 
 app.post('/users', (req, res) => {
-  users.push(req.body);
+  let user = req.body;
+  let validData = true;
+  if (user.username.length < 3 || user.nickname.length < 3) {
+    validData = false;
+  }
+
+  if (validData) {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].username === user.username ||
+        users[i].nickname === user.nickname) {
+        validData = false;
+        console.log('Data is not valid');
+      }
+    }
+  }
+
+  if (validData) {
+    users.push(user);
+  }
+  res.end();
 });
 
-// const routes = require('./routes/api/routes')(app);
+app.get('/messages', (req, res) => {
+  console.log('messages:', messages.length);
+  res.json(messages);
+  res.end();
+});
+
+app.post('/messages', (req, res) => {
+  console.log('messages:', messages.length)
+  let msg = req.body;
+  let validData = true;
+  if (msg.messageText.length < 3) {
+    validData = false;
+    console.log('Data is not valid');
+  }
+
+  if (validData) {
+    if (messages.length >= 100) {
+      messages.shift();
+    }
+    messages.push(msg);
+  }
+
+  res.end();
+});
 
 app.listen(5000, () => {
   console.log('Server is running on localhost:5000');
