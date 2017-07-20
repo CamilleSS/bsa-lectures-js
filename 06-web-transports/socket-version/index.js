@@ -83,11 +83,9 @@ io.on('connect', socket => {
   });
 
   socket.on('leaving', id => {
-    if (Number.isInteger(id) && typeof id !== 'undefined') {
-      console.log('ID LEAVING', id);
-      users[id].presence = 'offline';
-      console.log(users[id].presence);
-    }
+    console.log('ID LEAVING', id);
+    users[id].presence = 'offline';
+    console.log(users[id].presence);
     socket.broadcast.emit('leaving', id);
   });
 });

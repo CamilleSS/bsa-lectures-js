@@ -63,9 +63,10 @@ let userStatusColor = {
     console.log(id);
     userId = id;
     window.addEventListener('beforeunload', () => {
-      if (Number.isInteger(userId)) {
-        socket.emit('leaving', userId);
+      if (typeof userId === 'undefined') {
+        userId = 0;
       }
+      socket.emit('leaving', userId);
       socket.close();
     });
 });
@@ -118,8 +119,10 @@ let userStatusColor = {
   });
 
   // change status and send a message on user leaving
-  socket.on('leaving', userId => {
-    let userElement = userList.querySelectorAll('.user')[userId];
+  socket.on('leaving', id => {
+    console.log(id);
+    let userElement = userList.querySelectorAll('.user')[id];
+    console.log(userElement);
     let userStatus = userElement.querySelector('.status');
     userStatus.style.backgroundColor = userStatusColor.offline;
 
@@ -139,6 +142,7 @@ let userStatusColor = {
     text.innerHTML = `${username} left the chat`;
     message.appendChild(text);
     messageList.appendChild(message);
+    console.log(message);
 
     clearTimeout(statusTimeout);
   });
@@ -197,12 +201,14 @@ const prepareElement = {
   'username': (element, data) => element.innerHTML = data.username,
   'status': (element, data) => {
     socket.emit('user list length');
-    if (userListLength === userId || userId === 0) {
+    console.log(userId);
+    console.log(userListLength);
+    // if (userListLength === userId || userId === 0 && userListLength === 0) {
       statusTimeout = setTimeout(() => {
         presence = 'online';
         element.style.backgroundColor = userStatusColor[presence];
       }, 5000);
-    }
+    // }
     element.style.backgroundColor = userStatusColor[data.presence];
   },
   'nickname': (element, data) => element.innerHTML = `@${data.nickname}`,
