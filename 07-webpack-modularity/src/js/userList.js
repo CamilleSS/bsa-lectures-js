@@ -1,7 +1,5 @@
 const _ = require('lodash');
-const avatarUrl = require("file-loader!../images/default-avatar.jpg");
-
-// import * as avatarUrl from '../images/default-avatar.jpg';
+import avatarUrl from '../images/default-avatar.jpg'
 
 // handle user list
 function userList(users){
