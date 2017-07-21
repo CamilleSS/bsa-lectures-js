@@ -8,4 +8,5 @@ The repository contains completed tasks to the lectures of BSA 2017 JS:
 4) REST API
 5) Node.js/Express
 6) Web Transports
-7) ...
+7) Webpack/Modularity
+8) 

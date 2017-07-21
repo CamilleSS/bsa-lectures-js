@@ -3,6 +3,7 @@
 *.dev
 *.idea
 node_modules
+dist
 
 # OS
 Thumbs.db
