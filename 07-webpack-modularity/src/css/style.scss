@@ -1,0 +1,16 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #123456;
+$avatar-size: 50px;
+
+body {
+  font: 200% $font-stack;
+  color: $primary-color;
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+img {
+  width: $avatar-size;
+}
