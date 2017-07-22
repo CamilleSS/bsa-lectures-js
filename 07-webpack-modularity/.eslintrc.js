@@ -9,5 +9,8 @@ module.exports = {
 
     // disable rules from base configurations
     "no-console": "off"
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
   }
 };
