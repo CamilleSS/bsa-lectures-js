@@ -24,7 +24,8 @@ io.on('connect', socket => {
   socket.on('chat user', user => {
     let validData = true;
     let errorMessage;
-    if (user.username.length < 3 || user.nickname.length < 3) {
+    if (user.username.length < 3 || user.nickname.length < 3 ||
+        user.username.length > 20 || user.nickname.length > 20) {
       validData = false;
       errorMessage = 'Username and nickname should contain at least 3 characters';
       socket.emit('not valid user', errorMessage);
@@ -52,7 +53,7 @@ io.on('connect', socket => {
 
   socket.on('chat message', msg => {
     let validData = true;
-    if (msg.messageText.length < 0) {
+    if (msg.messageText.length < 3 || msg.messageText.length > 1000) {
       validData = false;
       errorMessage = 'Message should contain at least 3 characters';
       socket.emit('not valid message', errorMessage);
@@ -78,7 +79,6 @@ io.on('connect', socket => {
   socket.on('leaving', id => {
     if (users.length > 0) {
       users[id].presence = 'offline';
-      // socket.broadcast.emit('leaving', id);
     }
   });
 

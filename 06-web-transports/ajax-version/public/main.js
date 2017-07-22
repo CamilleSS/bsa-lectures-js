@@ -88,7 +88,8 @@ const getMessages = () => {
     username = usernameField.value;
     nickname = nicknameField.value;
 
-    if (username.length < 3 || nickname.length < 3) {
+    if (username.length < 3 || nickname.length < 3 ||
+        username.length > 20 || nickname.length > 20) {
       validData = false;
       userdataError.style.display = 'block';
     }
@@ -108,7 +109,7 @@ const getMessages = () => {
     let validData = true;
     let messageText = messageField.value;
 
-    if (messageText.length < 3) {
+    if (messageText.length < 3 || messageText.length > 1000) {
       validData = false;
       messageError.style.display = 'block';
     }
