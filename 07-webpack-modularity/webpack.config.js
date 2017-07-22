@@ -12,44 +12,50 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        enforce: 'pre',
-        use: [{
-          loader: "style-loader"
-        }, {
-          loader: "css-loader"
-        }, {
-          loader: "sass-loader"
-        }, {
-          loader: "autoprefixer-loader"
-        }]
+        enforce: "pre",
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+          "autoprefixer-loader"
+        ]
+      },
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
       },
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['env']
+            presets: ["env"]
           }
         }
       },
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.html/,
-        loader: 'htmlhint-loader',
+        loader: "htmlhint-loader",
         exclude: /node_modules/
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192
-            }
+        use: [{
+          loader: "url-loader",
+          options: {
+            limit: 8192
           }
-        ]
+        }]
       }
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: "eslint-loader"
+      // }
     ]
   },
   plugins: [new webpack.optimize.UglifyJsPlugin({
