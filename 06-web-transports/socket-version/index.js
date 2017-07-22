@@ -64,7 +64,6 @@ io.on('connect', socket => {
         messages.shift();
       }
       messages.push(msg);
-      console.log(messages.length);
       io.emit('chat message', msg);
     }
   });
@@ -77,17 +76,14 @@ io.on('connect', socket => {
   });
 
   socket.on('leaving', id => {
-    if (users.length > 0) {
       users[id].presence = 'offline';
-    }
+      socket.broadcast.emit('leaving', id);
+
   });
 
   socket.on('leaving message', data => {
-    console.log(data);
     messages.push(data);
-    console.log(messages);
     io.emit('chat message', data);
-    console.log(messages.length);
   });
 });
 

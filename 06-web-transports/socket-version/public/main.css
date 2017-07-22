@@ -10,6 +10,10 @@ body, input, textarea, button {
   font-family: 'Quicksand', sans-serif;
 }
 
+div {
+  word-break: keep-all;
+}
+
 #userdata-error, #message-error {
   display: none;
   color: #ff4000;
@@ -84,6 +88,7 @@ h2, h3 {
 }
 
 .message {
+  max-width: 600px;
   margin-bottom: 20px;
   padding: 20px;
   background: rgba(255, 255, 255, .7);

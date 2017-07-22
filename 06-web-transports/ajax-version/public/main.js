@@ -43,15 +43,18 @@ const getUsers = () => {
     if (users.length > 0) {
       userList.style.display = 'block';
     }
-
+    let renderedUsers = document.getElementsByClassName('user');
     users = JSON.parse(users);
-    removeChildren(userList);
-    for (let i in users) {
-      if (users.hasOwnProperty(i)) {
-        let user = constructElement(null, 'div', 'user', '', null, false);
-        let username = constructElement(users[i], 'div', 'username', 'username', user);
-        let nickname = constructElement(users[i], 'div', 'nickname', 'nickname', user);
-        userList.appendChild(user);
+
+    if (users.length > renderedUsers.length) {
+      removeChildren(userList);
+      for (let i in users) {
+        if (users.hasOwnProperty(i)) {
+          let user = constructElement(null, 'div', 'user', '', null, false);
+          let username = constructElement(users[i], 'div', 'username', 'username', user);
+          let nickname = constructElement(users[i], 'div', 'nickname', 'nickname', user);
+          userList.appendChild(user);
+        }
       }
     }
   });
@@ -63,20 +66,24 @@ const getMessages = () => {
     if (messages.length > 0) {
       messageList.style.display = 'block';
     }
-
+    let renderedMessages = document.getElementsByClassName('message');
     messages = JSON.parse(messages);
-    removeChildren(messageList);
-    for (let i in messages) {
-      if (messages.hasOwnProperty(i)) {
-        let message = constructElement(null, 'div', 'message', '', null, false);
-        let sender = constructElement(messages[i], 'div', 'sender', 'sender', message);
-        let time = constructElement(messages[i], 'div', 'time', 'time', message);
-        let text = constructElement(messages[i], 'div', 'text', 'text', message);
 
-        if (text.innerHTML.includes(`@${username}`)) {
-          message.style.backgroundColor = '#fff2b7';
+    if (messages.length > renderedMessages.length) {
+      console.log(messages.length, renderedMessages.length);
+      removeChildren(messageList);
+      for (let i in messages) {
+        if (messages.hasOwnProperty(i)) {
+          let message = constructElement(null, 'div', 'message', '', null, false);
+          let sender = constructElement(messages[i], 'div', 'sender', 'sender', message);
+          let time = constructElement(messages[i], 'div', 'time', 'time', message);
+          let text = constructElement(messages[i], 'div', 'text', 'text', message);
+
+          if (text.innerHTML.includes(`@${username}`)) {
+            message.style.backgroundColor = '#fff2b7';
+          }
+          messageList.appendChild(message);
         }
-        messageList.appendChild(message);
       }
     }
   });

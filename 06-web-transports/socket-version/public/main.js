@@ -184,6 +184,12 @@ let userStatusColor = {
       typingStatus.innerHTML = '';
     }, 1000);
   });
+
+  socket.on('leaving', id => {
+    let userStatus = document.getElementsByClassName('status')[id];
+    userStatus.style.backgroundColor = userStatusColor.offline;
+    clearTimeout(statusTimeout);
+  });
 })();
 
 /*
@@ -209,7 +215,7 @@ const createMessageElement = (data, parentElement) => {
   let sender = constructElement(data, 'div', 'sender', 'sender', message);
   let time = constructElement(data, 'div', 'time', 'time', message);
   let text = constructElement(data, 'div', 'text', 'text', message);
-  if (text.innerHTML.includes(`@${username}`)) {
+  if (text.innerHTML.includes(`@${nickname}`)) {
     message.style.backgroundColor = '#fff2b7';
   }
   parentElement.appendChild(message);
@@ -219,14 +225,14 @@ const createMessageElement = (data, parentElement) => {
 const prepareElement = {
   'username': (element, data) => element.innerHTML = data.username,
   'status': (element, data) => {
+    if (data.presence === 'offline') {
+      presence = data.presence;
+    } else {
       statusTimeout = setTimeout(() => {
-        if (data.presence === 'offline') {
-          presence = data.presence;
-        } else {
-          presence = 'online';
-        }
+        presence = 'online';
         element.style.backgroundColor = userStatusColor[presence];
-      }, 10000);
+      }, 60000);
+    }
     element.style.backgroundColor = userStatusColor[data.presence];
   },
   'nickname': (element, data) => element.innerHTML = `@${data.nickname}`,

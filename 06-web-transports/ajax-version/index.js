@@ -48,13 +48,11 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/messages', (req, res) => {
-  console.log('messages:', messages.length);
   res.json(messages);
   res.end();
 });
 
 app.post('/messages', (req, res) => {
-  console.log('messages:', messages.length)
   let msg = req.body;
   let validData = true;
   if (msg.messageText.length < 3) {
@@ -67,7 +65,6 @@ app.post('/messages', (req, res) => {
       messages.shift();
     }
     messages.push(msg);
-    console.log(messages);
   }
 
   res.end();
