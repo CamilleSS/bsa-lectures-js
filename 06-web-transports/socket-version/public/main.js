@@ -32,6 +32,8 @@ let userStatusColor = {
 
 (() => {
   window.removeEventListener('beforeunload', () => {});
+
+  // let user in chat after validating username and nickname
   saveUserdataButton.addEventListener('click', () => {
     let validData = true;
     username = usernameField.value;
@@ -49,6 +51,11 @@ let userStatusColor = {
     }
   });
 
+  socket.on('chat user', data => {
+    userList.style.display = 'block';
+    createUserElement(data, userList);
+  });
+
   socket.on('valid user', id => {
     socket.emit('user list length');
     userdataError.style.display = 'none';
@@ -59,49 +66,25 @@ let userStatusColor = {
     userId = id;
     window.addEventListener('beforeunload', () => {
       socket.emit('leaving', userId);
+
+      let userElement = userList.querySelectorAll('.user')[userId];
+      let name = userElement.querySelector('.username').innerHTML;
+      let userStatus = userElement.querySelector('.status');
+      userStatus.style.backgroundColor = userStatusColor.offline;
+
+      let sender = 'chatbot';
+      let time = new Date().getTime();
+      let messageText = `${name} left the chat`;
+      let data = {username: sender, nickname: '', time, messageText};
+      socket.emit('leaving message', data);
+
       socket.close();
     });
-});
-
-  socket.on('chat user', data => {
-    userList.style.display = 'block';
-    createUserElement(data, userList);
   });
 
   socket.on('not valid user', error => {
     userdataError.innerHTML = error;
     userdataError.style.display = 'block';
-  });
-
-  sendMessageButton.addEventListener('click', () => {
-    let validData = true;
-    let messageText = messageField.value;
-
-    if (messageText.length < 3) {
-      validData = false;
-      messageError.style.display = 'block';
-    }
-
-    if (validData) {
-      let time = new Date().getTime();
-      let data = {username, nickname, time, messageText};
-      socket.emit('chat message', data);
-      messageError.style.display = 'none';
-      messageField.value = '';
-    }
-  });
-
-  socket.on('chat message', data => {
-    messageList.style.display = 'block';
-    createMessageElement(data, messageList);
-    if (messageList.childElementCount > 100) {
-      messageList.removeChild(messageList.childNodes[0]);
-    }
-  });
-
-  socket.on('not valid message', error => {
-    messageError.innerHTML = error;
-    messageError.style.display = 'block';
   });
 
   // fetch the list of users
@@ -115,19 +98,64 @@ let userStatusColor = {
     }
   });
 
-  // change status and send a message on user leaving
-  socket.on('leaving', id => {
-    let userElement = userList.querySelectorAll('.user')[id];
-    let userStatus = userElement.querySelector('.status');
-    let name = userElement.querySelector('.username').innerHTML;
-    userStatus.style.backgroundColor = userStatusColor.offline;
-    let time = new Date().getTime();
-    let messageText = `${name} left the chat`;
-    let data = {username: 'chatbot', nickname: '', time, messageText};
+  // send message on click after validating it
+  sendMessageButton.addEventListener('click', () => {
+    let validData = true;
+    let messageText = messageField.value;
 
-    socket.emit('chat message', data);
+    // if (messageText.length < 3) {
+    //   validData = false;
+    //   messageError.style.display = 'block';
+    // }
+
+    if (validData) {
+      let time = new Date().getTime();
+      let data = {username, nickname, time, messageText};
+      socket.emit('chat message', data);
+      messageError.style.display = 'none';
+      messageField.value = '';
+    }
+  });
+
+  socket.on('chat message', data => {
     messageList.style.display = 'block';
-    clearTimeout(statusTimeout);
+
+    if (data.username === 'chatbot') {
+      let message = constructElement(null, 'div', 'message', '', null, false);
+
+      let senderElement = document.createElement('div');
+      senderElement.className = 'sender';
+      senderElement.innerHTML = data.username;
+      message.appendChild(senderElement);
+
+      let timeElement = document.createElement('div');
+      timeElement.className = 'time';
+      let date = new Date(data.time);
+      let timeToDisplay = date.toLocaleString();
+      timeElement.innerHTML = timeToDisplay;
+      message.appendChild(timeElement);
+
+      let textElement = document.createElement('div');
+      textElement.className = 'text';
+      textElement.innerHTML = data.messageText;
+      message.appendChild(textElement);
+
+      messageList.appendChild(message);
+      messageList.style.display = 'block';
+      clearTimeout(statusTimeout);
+
+    } else {
+      createMessageElement(data, messageList);
+    }
+
+    if (messageList.childElementCount > 100) {
+      messageList.removeChild(messageList.childNodes[0]);
+    }
+  });
+
+  socket.on('not valid message', error => {
+    messageError.innerHTML = error;
+    messageError.style.display = 'block';
   });
 
   // fetch the list of messages
@@ -157,9 +185,12 @@ let userStatusColor = {
   });
 })();
 
+/*
+ * create user element with username, nickname and status
+ * and append it to user list
+ */
 const createUserElement = (data, parentElement) => {
   let user;
-  // if (data.isArray) {data = data[i]}
   user = constructElement(data, 'div', 'user', null, null, false);
   let username = constructElement(data, 'div', 'username', 'username', user);
   let status = constructElement(data, 'div', 'status', 'status', user);
@@ -167,6 +198,10 @@ const createUserElement = (data, parentElement) => {
   parentElement.appendChild(user);
 };
 
+/*
+ * create message element with sender's name, time, message text
+ * and append it to message list
+ */
 const createMessageElement = (data, parentElement) => {
   let message;
   message = constructElement(null, 'div', 'message', '', null, false);
@@ -179,7 +214,7 @@ const createMessageElement = (data, parentElement) => {
   parentElement.appendChild(message);
 };
 
-// individual options for element handling
+// individual options for user/message element handling
 const prepareElement = {
   'username': (element, data) => element.innerHTML = data.username,
   'status': (element, data) => {
@@ -190,7 +225,7 @@ const prepareElement = {
           presence = 'online';
         }
         element.style.backgroundColor = userStatusColor[presence];
-      }, 60000);
+      }, 10000);
     element.style.backgroundColor = userStatusColor[data.presence];
   },
   'nickname': (element, data) => element.innerHTML = `@${data.nickname}`,
