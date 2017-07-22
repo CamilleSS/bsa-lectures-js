@@ -22,10 +22,6 @@ app.get('/main.js', (req, res) => {
 io.on('connect', socket => {
   console.log('Connection established');
 
-  socket.on('user list length', () => {
-    socket.emit('user list length', users.length);
-  });
-
   socket.on('chat user', user => {
     let validData = true;
     let errorMessage;
@@ -52,15 +48,12 @@ io.on('connect', socket => {
       socket.emit('valid user', id);
       users.push(user);
       io.emit('chat user', user);
-      for (let i = 0; i < users.length; i++) {
-        console.log(users[i]);
-      }
     }
   });
 
   socket.on('chat message', msg => {
     let validData = true;
-    if (msg.messageText.length < 3) {
+    if (msg.messageText.length < 0) {
       validData = false;
       errorMessage = 'Message should contain at least 3 characters';
       socket.emit('not valid message', errorMessage);
@@ -83,10 +76,10 @@ io.on('connect', socket => {
   });
 
   socket.on('leaving', id => {
-    console.log('ID LEAVING', id);
-    users[id].presence = 'offline';
-    console.log(users[id].presence);
-    socket.broadcast.emit('leaving', id);
+    if (users.length > 0) {
+      users[id].presence = 'offline';
+      socket.broadcast.emit('leaving', id);
+    }
   });
 });
 

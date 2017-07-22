@@ -67,6 +67,7 @@ app.post('/messages', (req, res) => {
       messages.shift();
     }
     messages.push(msg);
+    console.log(messages);
   }
 
   res.end();
