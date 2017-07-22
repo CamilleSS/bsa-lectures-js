@@ -11,6 +11,12 @@ module.exports = {
     "no-console": "off"
   },
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "globals": {
+    "require": false
   }
 };
