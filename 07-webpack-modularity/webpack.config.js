@@ -17,7 +17,7 @@ module.exports = {
           "style-loader",
           "css-loader",
           "sass-loader",
-          "autoprefixer-loader"
+          'postcss-loader'
         ]
       },
       {
@@ -37,12 +37,6 @@ module.exports = {
         }
       },
       {
-        enforce: "pre",
-        test: /\.html/,
-        loader: "htmlhint-loader",
-        exclude: /node_modules/
-      },
-      {
         test: /\.(png|jpg|gif)$/,
         use: [{
           loader: "url-loader",
@@ -51,11 +45,6 @@ module.exports = {
           }
         }]
       }
-      // {
-      //   test: /\.js$/,
-      //   exclude: /node_modules/,
-      //   loader: "eslint-loader"
-      // }
     ]
   },
   plugins: [new webpack.optimize.UglifyJsPlugin({
