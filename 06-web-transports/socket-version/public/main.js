@@ -40,8 +40,8 @@ let userStatusColor = {
     nickname = nicknameField.value;
     presence = 'appeared';
 
-    if (user.username.length < 3 || user.nickname.length < 3 ||
-        user.username.length > 20 || user.nickname.length > 20) {
+    if (username.length < 3 || nickname.length < 3 ||
+        username.length > 20 || nickname.length > 20) {
       validData = false;
       userdataError.style.display = 'block';
     }
@@ -104,7 +104,7 @@ let userStatusColor = {
     let validData = true;
     let messageText = messageField.value;
 
-    if (msg.messageText.length < 3 || msg.messageText.length > 1000) {
+    if (messageText.length < 3 || messageText.length > 1000) {
       validData = false;
       messageError.style.display = 'block';
     }

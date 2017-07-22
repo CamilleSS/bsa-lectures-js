@@ -27,7 +27,7 @@ io.on('connect', socket => {
     if (user.username.length < 3 || user.nickname.length < 3 ||
         user.username.length > 20 || user.nickname.length > 20) {
       validData = false;
-      errorMessage = 'Username and nickname should contain at least 3 characters';
+      errorMessage = 'Username and nickname should contain 3-20 characters';
       socket.emit('not valid user', errorMessage);
     }
 
@@ -55,7 +55,7 @@ io.on('connect', socket => {
     let validData = true;
     if (msg.messageText.length < 3 || msg.messageText.length > 1000) {
       validData = false;
-      errorMessage = 'Message should contain at least 3 characters';
+      errorMessage = 'Message should contain 3-1000 characters';
       socket.emit('not valid message', errorMessage);
     }
 
