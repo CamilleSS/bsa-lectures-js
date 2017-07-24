@@ -1,0 +1,61 @@
+@font-face {
+  font-family: tarrgetFont;
+  src: url(../resources/tarrget.ttf);
+}
+
+* {
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+}
+
+div {
+  word-break: keep-all;
+}
+
+input {
+  height: 20px;
+}
+
+h1,
+#start-fight > button {
+  font-family: tarrgetFont;
+}
+
+.fighter-inputs {
+  display: inline-block;
+}
+
+#f2-inputs {
+  margin-left: 40px;
+  float: right;
+}
+
+#f2-inputs, #f2-inputs > * {
+  text-align: right;
+}
+
+#set-points {
+  margin: 40px auto;
+}
+
+#set-points > input {
+  text-align: center;
+}
+
+#start-fight > button {
+  width: 100px;
+  height: 30px;
+}
+
+#battle-output {
+  width: 50%;
+  margin: 40px auto;
+  text-align: center;
+}

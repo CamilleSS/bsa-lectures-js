@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <title>TEKKEN 8</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+
+<body>
+  <div id="title">
+    <h1>TEKKEN 8</h1>
+  </div>
+
+  <!-- main section -->
+  <div id="main content">
+    <div id="f1-inputs" class="fighter-inputs">
+      <h3>Fighter's stats:</h3>
+      <input class="name" type="text" name="f1-name" placeholder="name" value="Heihachi">
+      <input class="power" type="text" name="f1-power" placeholder="power" value="20">
+      <input class="health" type="text" name="f1-health" placeholder="health" value="2000">
+    </div>
+
+    <div id="f2-inputs" class="fighter-inputs">
+      <h3>Fighter's stats:</h3>
+      <input class="health" type="text" name="f2-health" placeholder="health" value="1000">
+      <input class="power" type="text" name="f2-power" placeholder="power" value="20">
+      <input class="name" type="text" name="f2-name" placeholder="name" value="Jinpachi">
+    </div>
+  </div>
+
+  <div id="set-points">
+    <input type="text" name="points" placeholder="hit points" value="10,10,20,20,5,5,10,10,5,5">
+  </div>
+
+  <div id="start-fight">
+    <button type="button">FIGHT!</button>
+  </div>
+
+  <div id="battle-output"></div>
+
+  <script src="../../dist/bundle.js"></script>
+</body>
+</html>
