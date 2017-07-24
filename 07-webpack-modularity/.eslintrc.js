@@ -1,22 +1,19 @@
 module.exports = {
   "extends": "eslint:recommended",
   "rules": {
-    // enable additional rules
     "indent": ["error", 2],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "no-cond-assign": ["error", "always"],
-
-    // disable rules from base configurations
     "no-console": "off"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 6,
-    "ecmaFeatures": {
-      "modules": true
-    }
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
   },
-  "globals": {
-    "require": false
+  "env": {
+    "browser": true,
+    "node": true
   }
 };
