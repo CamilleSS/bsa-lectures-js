@@ -7,7 +7,7 @@ export interface IFight {
   settings: ISettings;
   initializeFight: (fighter: IFighter,
                     improvedFighter: IImprovedFighter,
-                    points) => void;
+                    points: number[]) => void;
 }
 
 export class Fight implements IFight {
@@ -22,9 +22,9 @@ export class Fight implements IFight {
   }
 
   private _kick(pointIndex: number,
-                fighters: IFighter|IImprovedFighter[],
+                fighters: any[],
                 point: number,
-                output: HTMLElement) {
+                output: HTMLElement): boolean {
     // Switch indexes of the fighters to set an attacker
     let fIndex1: number = pointIndex % 2;
     let fIndex2: number = Math.abs(fIndex1 - 1);
