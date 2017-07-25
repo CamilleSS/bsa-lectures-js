@@ -61,13 +61,13 @@ module.exports = {
       }
     ]
   },
-  // plugins: [new webpack.optimize.UglifyJsPlugin({
-  //   minimize: true,
-  //   compress: {
-  //     warnings: false
-  //   },
-  //   comments: false
-  // })],
+  plugins: [new webpack.optimize.UglifyJsPlugin({
+    minimize: true,
+    compress: {
+      warnings: false
+    },
+    comments: false
+  })],
   devServer: {
     inline: true,
     port: 5000
