@@ -1,0 +1,12 @@
+#display {
+  display: inline-block;
+}
+
+#display > div {
+  float: left;
+}
+
+#hours::after, #minutes::after {
+  content: ':';
+  margin: 0 4px;
+}

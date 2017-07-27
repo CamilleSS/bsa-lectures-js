@@ -1,0 +1,26 @@
+#display {
+  display: inline-block;
+}
+
+#display > div {
+  float: left;
+}
+
+#days::after,
+#hours::after,
+#minutes::after,
+#seconds::after {
+  content: ':';
+  margin: 0 4px;
+}
+
+#duration > p {
+  display: inline-block;
+  margin: 0;
+  font-size: .8rem;
+}
+
+#duration-input {
+  display: block;
+  margin: 0;
+}

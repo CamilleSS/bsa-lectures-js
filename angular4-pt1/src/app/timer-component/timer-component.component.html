@@ -1,0 +1,17 @@
+<div id="display">
+  <div id="days">{{ remainderOutput.days }}</div>
+  <div id="hours">{{ remainderOutput.hours }}</div>
+  <div id="minutes">{{ remainderOutput.minutes }}</div>
+  <div id="seconds">{{ remainderOutput.seconds }}</div>
+  <div id="milliseconds">{{ remainderOutput.milliseconds }}</div>
+</div>
+
+<div id="duration">
+  <p>set duration in minutes</p>
+  <input id="duration-input" type="text" name="duration" (keyup)="activateButtons($event)" #duration>
+</div>
+
+<div id="buttons">
+  <button id="main-button" [disabled]="mainButtonDisabled" (click)="onMainButtonClick(duration.value)">{{ mainButtonValue }}</button>
+  <button id="reset" (click)="onResetButtonClick()">Reset</button>
+</div>

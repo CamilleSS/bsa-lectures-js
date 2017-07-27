@@ -9,4 +9,6 @@ The repository contains completed tasks to the lectures of BSA 2017 JS:
 5) Node.js/Express
 6) Web Transports
 7) Webpack/Modularity
-8) 
+8) TypeScript
+9) Angular 4 pt.1
+10) Angular 4 pt.2

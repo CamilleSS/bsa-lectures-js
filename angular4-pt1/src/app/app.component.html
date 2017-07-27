@@ -1,0 +1,10 @@
+<app-clock-component *ngIf="modes[0].checked"></app-clock-component>
+<app-timer-component *ngIf="modes[1].checked"></app-timer-component>
+<app-stopwatch-component *ngIf="modes[2].checked"></app-stopwatch-component>
+
+<div id="mode-block">
+  <div *ngFor="let mode of modes">
+    <input id="{{ mode.mode }}" type="radio" name="mode" [(value)]="mode.mode" [checked]="mode.checked" (change)="onModeChange(mode)">
+    <label for="{{ mode.mode }}">{{ mode.mode }}</label>
+  </div>
+</div>
