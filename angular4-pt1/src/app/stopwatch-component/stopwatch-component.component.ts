@@ -73,8 +73,8 @@ export class StopwatchComponentComponent implements OnInit {
   handleOutput(): void {
     const output = this.convertationService.makeOutput(this.duration);
     const lapOutput = this.convertationService.makeOutput(this.lapDuration);
-    this.durationOutput = output.durationOutput;
-    this.lapDurationOutput = lapOutput.durationOutput;
+    this.durationOutput = output;
+    this.lapDurationOutput = lapOutput;
   }
 
   onLapButtonClick(): void {
@@ -87,7 +87,7 @@ export class StopwatchComponentComponent implements OnInit {
         durationSum += lap.duration;
       }
       this.avg = (durationSum + this.lapDuration) / (length + 1);
-      this.avgOutput = this.convertationService.makeOutput(this.avg).durationOutput;
+      this.avgOutput = this.convertationService.makeOutput(this.avg);
       prev = this.lapDuration - this.laps[length - 1].duration;
       avg = this.lapDuration - this.avg;
     } else {
@@ -103,8 +103,8 @@ export class StopwatchComponentComponent implements OnInit {
       worseThanPrev = true;
     }
 
-    const prevOutputRaw = this.convertationService.makeOutput(prev).durationOutput;
-    let avgOutputRaw = this.convertationService.makeOutput(avg).durationOutput;
+    const prevOutputRaw = this.convertationService.makeOutput(prev);
+    let avgOutputRaw = this.convertationService.makeOutput(avg);
     const prevOutput = `${prevOutputRaw.hours}:${prevOutputRaw.minutes}:${prevOutputRaw.seconds}:${prevOutputRaw.milliseconds}`;
     let avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
 
@@ -121,7 +121,7 @@ export class StopwatchComponentComponent implements OnInit {
 
     for (const lap of this.laps) {
       lap.avg = lap.duration - this.avg;
-      avgOutputRaw = this.convertationService.makeOutput(lap.avg).durationOutput;
+      avgOutputRaw = this.convertationService.makeOutput(lap.avg);
       avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
       lap.avgOutput = avgOutput;
 

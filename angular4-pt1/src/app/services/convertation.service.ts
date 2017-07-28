@@ -23,7 +23,7 @@ export class ConvertationService {
       seconds: secondsToDisplay,
       milliseconds: millisecondsToDisplay
     };
-    return {duration, durationOutput};
+    return durationOutput;
   }
 
   convertToMilliseconds(duration: string | number): number {

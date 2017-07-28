@@ -34,12 +34,11 @@ export class TimerComponentComponent implements OnInit {
     if (this.mainButtonValue === 'Start') {
       this.duration = this.convertationService.convertToMilliseconds(duration);
       let output = this.convertationService.makeOutput(this.duration);
-      this.remainderOutput = output.durationOutput;
-      this.duration = output.duration;
+      this.remainderOutput = output;
 
       this.timerInterval = setInterval(() => {
         output = this.convertationService.makeOutput(this.duration);
-        this.remainderOutput = output.durationOutput;
+        this.remainderOutput = output;
         this.duration -= 10;
       }, 10);
 
@@ -47,8 +46,7 @@ export class TimerComponentComponent implements OnInit {
 
     } else if (this.mainButtonValue === 'Pause') {
       const output = this.convertationService.makeOutput(this.duration);
-      this.remainderOutput = output.durationOutput;
-      this.duration = output.duration;
+      this.remainderOutput = output;
 
       clearInterval(this.timerInterval);
       this.mainButtonValue = 'Continue';
@@ -56,7 +54,7 @@ export class TimerComponentComponent implements OnInit {
     } else if (this.mainButtonValue === 'Continue') {
       this.timerInterval = setInterval(() => {
         const output = this.convertationService.makeOutput(this.duration);
-        this.remainderOutput = output.durationOutput;
+        this.remainderOutput = output;
         this.duration -= 10;
       }, 10);
 

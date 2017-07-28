@@ -9,14 +9,10 @@ export class TimeHandlerService {
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
 
-    const addZero = (amount) => {
-      amount = amount > 9 ? amount : '0' + amount;
-      return amount;
-    };
+    const hoursToDisplay = this.addZero(hours);
+    const minutesToDisplay = this.addZero(minutes);
+    const secondsToDisplay = this.addZero(seconds);
 
-    const hoursToDisplay = addZero(hours);
-    const minutesToDisplay = addZero(minutes);
-    const secondsToDisplay = addZero(seconds);
     const time = {
       hours: hoursToDisplay,
       minutes: minutesToDisplay,
@@ -25,4 +21,10 @@ export class TimeHandlerService {
 
     return time;
   }
+
+  addZero(amount: number | string): number | string {
+    amount = amount > 9 ? amount : '0' + amount;
+    return amount;
+  }
+
 }
