@@ -19,14 +19,14 @@
 </div>
 
 <div id="laps">
-  <div id="avg">AVG: {{ avgOutput.hours + ":" + avgOutput.minutes + ":" + avgOutput.seconds + ":" + avgOutput.milliseconds }}</div>
+  <div id="avg">AVG: {{ avgOutput }}</div>
 
   <div *ngFor="let lap of laps; let i = index">
-    <div class="lap-number">{{ i + 1 }}</div>
+    <div class="lap-number">{{ laps.length - i }}</div>
     <div class="lap-time">
-      <div id="avg">{{ lap.durationOutput.hours + ":" + lap.durationOutput.minutes + ":" + lap.durationOutput.seconds + ":" + lap.durationOutput.milliseconds }}</div>
+      <div class="avg">{{ lap.durationOutput }}</div>
     </div>
-    <div class="lap-prev" [ngClass]="{'better-result': lap.betterThanPrev, 'worse-result': lap.worseThanPrev}">prev: {{ lap.prevOutput }}</div>
+    <div class="lap-prev" *ngIf="i + 1 !== laps.length" [ngClass]="{'better-result': lap.betterThanPrev, 'worse-result': lap.worseThanPrev}">prev: {{ lap.prevOutput }}</div>
     <div class="lap-avg" [ngClass]="{'better-result': lap.betterThanAvg, 'worse-result': lap.worseThanAvg}">avg: {{ lap.avgOutput }}</div>
   </div>
 </div>

@@ -30,39 +30,31 @@ export class StopwatchComponentComponent implements OnInit {
   stopwatchInterval;
   laps = [];
   avg = 0;
-  avgOutput = {
-    hours: '00',
-    minutes: '00',
-    seconds: '00',
-    milliseconds: '000'
-  };
+  avgOutput = '00:00:00:000';
 
   onMainButtonClick(): void {
     if (this.mainButtonValue === 'Start') {
       this.duration = this.convertationService.convertToMilliseconds(this.duration);
-      this.handleOutput();
 
       this.stopwatchInterval = setInterval(() => {
-        this.handleOutput();
         this.duration += 10;
         this.lapDuration += 10;
+        this.handleOutput();
       }, 10);
 
       this.mainButtonValue = 'Pause';
       this.lapButtonDisabled = false;
 
     } else if (this.mainButtonValue === 'Pause') {
-      this.handleOutput();
-
       clearInterval(this.stopwatchInterval);
       this.mainButtonValue = 'Continue';
       this.lapButtonDisabled = true;
 
     } else if (this.mainButtonValue === 'Continue') {
       this.stopwatchInterval = setInterval(() => {
-        this.handleOutput();
         this.duration += 10;
         this.lapDuration += 10;
+        this.handleOutput();
       }, 10);
 
       this.mainButtonValue = 'Pause';
@@ -71,10 +63,8 @@ export class StopwatchComponentComponent implements OnInit {
   }
 
   handleOutput(): void {
-    const output = this.convertationService.makeOutput(this.duration);
-    const lapOutput = this.convertationService.makeOutput(this.lapDuration);
-    this.durationOutput = output;
-    this.lapDurationOutput = lapOutput;
+    this.durationOutput = this.convertationService.makeOutput(this.duration);
+    this.lapDurationOutput = this.convertationService.makeOutput(this.lapDuration);
   }
 
   onLapButtonClick(): void {
@@ -87,30 +77,35 @@ export class StopwatchComponentComponent implements OnInit {
         durationSum += lap.duration;
       }
       this.avg = (durationSum + this.lapDuration) / (length + 1);
-      this.avgOutput = this.convertationService.makeOutput(this.avg);
-      prev = this.lapDuration - this.laps[length - 1].duration;
+
+      const avgOutputRaw = this.convertationService.makeOutput(this.avg);
+      this.avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
+      if (length > 0) {
+        prev = this.lapDuration - this.laps[0].duration;
+      } else {
+        prev = 0;
+      }
       avg = this.lapDuration - this.avg;
+
     } else {
       prev = 0;
       avg = 0;
     }
 
-    if (prev < 0) {
-      betterThanPrev = true;
-      worseThanPrev = false;
-    } else {
-      betterThanPrev = false;
-      worseThanPrev = true;
-    }
+    betterThanPrev = prev < 0;
+    worseThanPrev = prev >= 0;
 
     const prevOutputRaw = this.convertationService.makeOutput(prev);
     let avgOutputRaw = this.convertationService.makeOutput(avg);
     const prevOutput = `${prevOutputRaw.hours}:${prevOutputRaw.minutes}:${prevOutputRaw.seconds}:${prevOutputRaw.milliseconds}`;
     let avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
 
-    this.laps.push({
+    const lapDurationOutputRaw = this.lapDurationOutput;
+    const lapDurationOutput = `${lapDurationOutputRaw.hours}:${lapDurationOutputRaw.minutes}:${lapDurationOutputRaw.seconds}:${lapDurationOutputRaw.milliseconds}`;
+
+    this.laps.unshift({
       duration: this.lapDuration,
-      durationOutput: this.lapDurationOutput,
+      durationOutput: lapDurationOutput,
       prev,
       prevOutput,
       avg,
@@ -125,13 +120,8 @@ export class StopwatchComponentComponent implements OnInit {
       avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
       lap.avgOutput = avgOutput;
 
-      if (lap.avg < 0) {
-        lap.betterThanAvg = true;
-        lap.worseThanAvg = false;
-      } else {
-        lap.betterThanAvg = false;
-        lap.worseThanAvg = true;
-      }
+      lap.betterThanAvg = lap.avg < 0;
+      lap.worseThanAvg = lap.avg >= 0;
     }
 
     this.lapDuration = 0;
@@ -141,7 +131,6 @@ export class StopwatchComponentComponent implements OnInit {
       seconds: '00',
       milliseconds: '000'
     };
-    console.log(this.laps);
   }
 
   onResetButtonClick(): void {
@@ -163,12 +152,7 @@ export class StopwatchComponentComponent implements OnInit {
       seconds: '00',
       milliseconds: '000'
     };
-    this.avgOutput = {
-      hours: '00',
-      minutes: '00',
-      seconds: '00',
-      milliseconds: '000'
-    };
+    this.avgOutput = '00:00:00:000';
   }
 
   ngOnInit(): void {}
