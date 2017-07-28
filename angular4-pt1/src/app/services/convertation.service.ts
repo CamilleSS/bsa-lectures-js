@@ -8,14 +8,21 @@ export class ConvertationService {
     const hours = Math.floor(absDuration % (1000 * 60 * 60 * 24) / 1000 / 60 / 60);
     const minutes = Math.floor(absDuration % (1000 * 60 * 60) / 1000 / 60);
     const seconds = Math.floor(absDuration % (1000 * 60) / 1000);
-    let milliseconds: number | string = Math.floor(absDuration % 1000);
+    const milliseconds: number | string = Math.floor(absDuration % 1000);
 
     let hoursToDisplay = this.addZero(hours);
     hoursToDisplay = duration > 0 ? hoursToDisplay : '-' + hoursToDisplay;
     const minutesToDisplay = this.addZero(minutes);
     const secondsToDisplay = this.addZero(seconds);
-    milliseconds = milliseconds > 99 ? milliseconds : '0' + milliseconds;
-    const millisecondsToDisplay = milliseconds.toString();
+    let millisecondsToDisplay;
+
+    if (milliseconds < 10) {
+      millisecondsToDisplay = `00${milliseconds}`;
+    } else if (milliseconds >= 10 && milliseconds < 100) {
+      millisecondsToDisplay = '0' + milliseconds;
+    } else {
+      millisecondsToDisplay = milliseconds;
+    }
 
     const durationOutput = {
       hours: hoursToDisplay,
