@@ -23,21 +23,19 @@ export class TimerComponentComponent implements OnInit {
   timerInterval;
 
   activateButtons(event: any): void {
-    if (parseFloat(event.target.value).toString() !== 'NaN') {
+    if (!isNaN(event.target.value) && event.target.value > 0) {
       this.mainButtonDisabled = false;
     } else {
       this.mainButtonDisabled = true;
     }
   }
 
-  onMainButtonClick(duration): void {
+  onMainButtonClick(duration: number): void {
     if (this.mainButtonValue === 'Start') {
       this.duration = this.convertationService.convertToMilliseconds(duration);
-      let output = this.convertationService.makeOutput(this.duration);
-      this.remainderOutput = output;
 
       this.timerInterval = setInterval(() => {
-        output = this.convertationService.makeOutput(this.duration);
+        const output = this.convertationService.makeOutput(this.duration);
         this.remainderOutput = output;
         this.duration -= 10;
       }, 10);
@@ -45,9 +43,6 @@ export class TimerComponentComponent implements OnInit {
       this.mainButtonValue = 'Pause';
 
     } else if (this.mainButtonValue === 'Pause') {
-      const output = this.convertationService.makeOutput(this.duration);
-      this.remainderOutput = output;
-
       clearInterval(this.timerInterval);
       this.mainButtonValue = 'Continue';
 

@@ -27,7 +27,7 @@ export class StopwatchComponentComponent implements OnInit {
     seconds: '00',
     milliseconds: '000'
   };
-  timerInterval;
+  stopwatchInterval;
   laps = [];
   avg = 0;
   avgOutput = {
@@ -42,7 +42,7 @@ export class StopwatchComponentComponent implements OnInit {
       this.duration = this.convertationService.convertToMilliseconds(this.duration);
       this.handleOutput();
 
-      this.timerInterval = setInterval(() => {
+      this.stopwatchInterval = setInterval(() => {
         this.handleOutput();
         this.duration += 10;
         this.lapDuration += 10;
@@ -54,12 +54,12 @@ export class StopwatchComponentComponent implements OnInit {
     } else if (this.mainButtonValue === 'Pause') {
       this.handleOutput();
 
-      clearInterval(this.timerInterval);
+      clearInterval(this.stopwatchInterval);
       this.mainButtonValue = 'Continue';
       this.lapButtonDisabled = true;
 
     } else if (this.mainButtonValue === 'Continue') {
-      this.timerInterval = setInterval(() => {
+      this.stopwatchInterval = setInterval(() => {
         this.handleOutput();
         this.duration += 10;
         this.lapDuration += 10;
@@ -145,7 +145,7 @@ export class StopwatchComponentComponent implements OnInit {
   }
 
   onResetButtonClick(): void {
-    clearInterval(this.timerInterval);
+    clearInterval(this.stopwatchInterval);
     this.mainButtonValue = 'Start';
     this.laps = [];
     this.duration = 0;
