@@ -1,25 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { TimerService } from '../services/timer.service';
+import { ConvertationService } from '../services/convertation.service';
 
 @Component({
   selector: 'app-timer-component',
   templateUrl: './timer-component.component.html',
   styleUrls: ['./timer-component.component.css'],
-  providers: [TimerService]
+  providers: [ConvertationService]
 })
 
 export class TimerComponentComponent implements OnInit {
 
-  constructor(public timerService: TimerService) {}
+  constructor(public convertationService: ConvertationService) {}
   mainButtonValue = 'Start';
   mainButtonDisabled = true;
   duration = 0;
   remainderOutput = {
-    days: '0',
     hours: '00',
     minutes: '00',
     seconds: '00',
-    milliseconds: '00'
+    milliseconds: '000'
   };
   timerInterval;
 
@@ -33,22 +32,22 @@ export class TimerComponentComponent implements OnInit {
 
   onMainButtonClick(duration): void {
     if (this.mainButtonValue === 'Start') {
-      this.duration = this.timerService.convertToMilliseconds(duration);
-      let output = this.timerService.makeOutput(this.duration);
-      this.remainderOutput = output.remainderOutput;
+      this.duration = this.convertationService.convertToMilliseconds(duration);
+      let output = this.convertationService.makeOutput(this.duration);
+      this.remainderOutput = output.durationOutput;
       this.duration = output.duration;
 
       this.timerInterval = setInterval(() => {
-        output = this.timerService.makeOutput(this.duration);
-        this.remainderOutput = output.remainderOutput;
-        this.duration = output.duration;
+        output = this.convertationService.makeOutput(this.duration);
+        this.remainderOutput = output.durationOutput;
+        this.duration -= 10;
       }, 10);
 
       this.mainButtonValue = 'Pause';
 
     } else if (this.mainButtonValue === 'Pause') {
-      const output = this.timerService.makeOutput(this.duration);
-      this.remainderOutput = output.remainderOutput;
+      const output = this.convertationService.makeOutput(this.duration);
+      this.remainderOutput = output.durationOutput;
       this.duration = output.duration;
 
       clearInterval(this.timerInterval);
@@ -56,9 +55,9 @@ export class TimerComponentComponent implements OnInit {
 
     } else if (this.mainButtonValue === 'Continue') {
       this.timerInterval = setInterval(() => {
-        const output = this.timerService.makeOutput(this.duration);
-        this.remainderOutput = output.remainderOutput;
-        this.duration = output.duration;
+        const output = this.convertationService.makeOutput(this.duration);
+        this.remainderOutput = output.durationOutput;
+        this.duration -= 10;
       }, 10);
 
       this.mainButtonValue = 'Pause';
@@ -70,15 +69,12 @@ export class TimerComponentComponent implements OnInit {
     this.mainButtonValue = 'Start';
     this.duration = 0;
     this.remainderOutput = {
-      days: '0',
       hours: '00',
       minutes: '00',
       seconds: '00',
-      milliseconds: '00'
+      milliseconds: '000'
     };
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

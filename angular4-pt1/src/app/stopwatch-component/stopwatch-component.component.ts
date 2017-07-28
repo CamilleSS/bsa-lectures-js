@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { StopwatchService } from '../services/stopwatch.service';
+import { ConvertationService } from '../services/convertation.service';
 
 @Component({
   selector: 'app-stopwatch-component',
   templateUrl: './stopwatch-component.component.html',
   styleUrls: ['./stopwatch-component.component.css'],
-  providers: [StopwatchService]
+  providers: [ConvertationService]
 })
+
 export class StopwatchComponentComponent implements OnInit {
 
-  constructor(public stopwatchService: StopwatchService) {}
+  constructor(public convertationService: ConvertationService) {}
   mainButtonValue = 'Start';
   lapButtonDisabled = true;
   duration = 0;
@@ -38,7 +39,7 @@ export class StopwatchComponentComponent implements OnInit {
 
   onMainButtonClick(): void {
     if (this.mainButtonValue === 'Start') {
-      this.duration = this.stopwatchService.convertToMilliseconds(this.duration);
+      this.duration = this.convertationService.convertToMilliseconds(this.duration);
       this.handleOutput();
 
       this.timerInterval = setInterval(() => {
@@ -70,8 +71,8 @@ export class StopwatchComponentComponent implements OnInit {
   }
 
   handleOutput(): void {
-    const output = this.stopwatchService.makeOutput(this.duration);
-    const lapOutput = this.stopwatchService.makeOutput(this.lapDuration);
+    const output = this.convertationService.makeOutput(this.duration);
+    const lapOutput = this.convertationService.makeOutput(this.lapDuration);
     this.durationOutput = output.durationOutput;
     this.lapDurationOutput = lapOutput.durationOutput;
   }
@@ -86,7 +87,7 @@ export class StopwatchComponentComponent implements OnInit {
         durationSum += lap.duration;
       }
       this.avg = (durationSum + this.lapDuration) / (length + 1);
-      this.avgOutput = this.stopwatchService.makeOutput(this.avg).durationOutput;
+      this.avgOutput = this.convertationService.makeOutput(this.avg).durationOutput;
       prev = this.lapDuration - this.laps[length - 1].duration;
       avg = this.lapDuration - this.avg;
     } else {
@@ -102,8 +103,8 @@ export class StopwatchComponentComponent implements OnInit {
       worseThanPrev = true;
     }
 
-    const prevOutputRaw = this.stopwatchService.makeOutput(prev).durationOutput;
-    let avgOutputRaw = this.stopwatchService.makeOutput(avg).durationOutput;
+    const prevOutputRaw = this.convertationService.makeOutput(prev).durationOutput;
+    let avgOutputRaw = this.convertationService.makeOutput(avg).durationOutput;
     const prevOutput = `${prevOutputRaw.hours}:${prevOutputRaw.minutes}:${prevOutputRaw.seconds}:${prevOutputRaw.milliseconds}`;
     let avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
 
@@ -120,7 +121,7 @@ export class StopwatchComponentComponent implements OnInit {
 
     for (const lap of this.laps) {
       lap.avg = lap.duration - this.avg;
-      avgOutputRaw = this.stopwatchService.makeOutput(lap.avg).durationOutput;
+      avgOutputRaw = this.convertationService.makeOutput(lap.avg).durationOutput;
       avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
       lap.avgOutput = avgOutput;
 

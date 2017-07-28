@@ -10,7 +10,7 @@ export class AppComponent implements OnInit{
   modes = [
     {
       mode: 'clock',
-      checked: false
+      checked: true
     },
     {
       mode: 'timer',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
     },
     {
       mode: 'stopwatch',
-      checked: true
+      checked: false
     }
   ];
 

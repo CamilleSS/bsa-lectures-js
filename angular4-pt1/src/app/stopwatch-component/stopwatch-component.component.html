@@ -12,6 +12,12 @@
   <div class="milliseconds">{{ durationOutput.milliseconds }}</div>
 </div>
 
+<div id="buttons">
+  <button id="main-button" (click)="onMainButtonClick()">{{ mainButtonValue }}</button>
+  <button id="lap" [disabled]="lapButtonDisabled" (click)="onLapButtonClick()">Lap</button>
+  <button id="reset" (click)="onResetButtonClick()">Reset</button>
+</div>
+
 <div id="laps">
   <div id="avg">AVG: {{ avgOutput.hours + ":" + avgOutput.minutes + ":" + avgOutput.seconds + ":" + avgOutput.milliseconds }}</div>
 
@@ -23,10 +29,4 @@
     <div class="lap-prev" [ngClass]="{'better-result': lap.betterThanPrev, 'worse-result': lap.worseThanPrev}">prev: {{ lap.prevOutput }}</div>
     <div class="lap-avg" [ngClass]="{'better-result': lap.betterThanAvg, 'worse-result': lap.worseThanAvg}">avg: {{ lap.avgOutput }}</div>
   </div>
-</div>
-
-<div id="buttons">
-  <button id="main-button" (click)="onMainButtonClick()">{{ mainButtonValue }}</button>
-  <button id="lap" [disabled]="lapButtonDisabled" (click)="onLapButtonClick()">Lap</button>
-  <button id="reset" (click)="onResetButtonClick()">Reset</button>
 </div>
