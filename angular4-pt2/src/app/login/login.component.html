@@ -1,0 +1,51 @@
+<div id="title">
+  <h1>Login</h1>
+</div>
+
+<div id="form">
+  <div id="user-error">{{ userError }}</div>
+
+  <form #form="ngForm">
+    <div class="input-row">
+      <label for="email">Email:</label>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        required
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+        [(ngModel)]="user.email"
+        #emailInput="ngModel">
+      <div class="error" *ngIf="emailInput.errors && emailInput.errors.required && emailInput.touched">Email cannot be empty</div>
+      <div class="error" *ngIf="emailInput.errors && emailInput.errors.pattern && emailInput.touched">Email is not valid</div>
+    </div>
+
+    <div class="input-row">
+      <label for="password">Password:</label>
+      <input
+        id="password"
+        type="password"
+        name="password"
+        required
+        minlength="3"
+        [(ngModel)]="user.password"
+        #passwordInput="ngModel">
+      <div class="error" *ngIf="passwordInput.errors && passwordInput.errors.required && passwordInput.touched">Password cannot be empty</div>
+      <div class="error" *ngIf="passwordInput.errors && passwordInput.errors.minlength && passwordInput.touched">Password should contain at least 3 characters</div>
+    </div>
+
+    <div id="submit-button">
+      <button
+        type="submit"
+        (click)="login(form)">
+        Login
+        <!--[disabled]="!form.form.valid"-->
+      </button>
+    </div>
+
+    <div id="links">
+      <a href="../registration">Registration</a>
+      <a href="../remind-password">Forgot my password</a>
+    </div>
+  </form>
+</div>

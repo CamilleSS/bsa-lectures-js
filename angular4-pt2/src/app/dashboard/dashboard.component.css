@@ -1,0 +1,24 @@
+header {
+  width: 100vw;
+  background: #333;
+}
+
+nav {
+  padding: 30px;
+  text-align: center;
+}
+
+nav > a {
+  display: inline-block;
+  margin: 0 20px;
+  color: #fff;
+  text-decoration: none;
+}
+
+nav > a:hover {
+  text-decoration: underline;
+}
+
+app-profile {
+  width: 100%;
+}
