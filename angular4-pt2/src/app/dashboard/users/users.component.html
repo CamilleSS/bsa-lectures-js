@@ -1,3 +1,23 @@
-<p>
-  users works!
-</p>
+<div id="title">
+  <h1>User list</h1>
+</div>
+
+<div id="table">
+  <div id="table-header">
+    <div>first name</div>
+    <div>last name</div>
+    <div>email</div>
+    <div>birth year</div>
+    <div>password</div>
+  </div>
+
+  <div id="table-content">
+    <div class="table-row" *ngFor="let user of users">
+      <div>{{ user.firstName }}</div>
+      <div>{{ user.lastName }}</div>
+      <div>{{ user.email }}</div>
+      <div>{{ user.birthYear }}</div>
+      <div>{{ user.password }}</div>
+    </div>
+  </div>
+</div>

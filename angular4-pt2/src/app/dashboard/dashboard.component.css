@@ -1,5 +1,5 @@
 header {
-  width: 100vw;
+  /*width: 100vw;*/
   background: #333;
 }
 
@@ -17,8 +17,4 @@ nav > a {
 
 nav > a:hover {
   text-decoration: underline;
-}
-
-app-profile {
-  width: 100%;
 }

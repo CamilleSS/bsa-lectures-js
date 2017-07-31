@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// import { NgForm } from '@angular/forms';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -8,10 +8,12 @@ import { Router } from '@angular/router';
   styleUrls: [
     '../app.component.css',
     './registration.component.css'
-  ]
+  ],
+  providers: [UserService]
 })
+
 export class RegistrationComponent implements OnInit {
-  // regForm = NgForm;
+  userError = '';
   user = {
     firstName: 'qqq',
     lastName: 'qqq',
@@ -20,15 +22,13 @@ export class RegistrationComponent implements OnInit {
     password: 'qqq'
   };
 
-  userExists = '';
-
-  constructor(public router: Router) {
+  constructor(public router: Router, public userService: UserService) {
     // localStorage.users = '';
   }
 
   register(form): void {
     if (form.valid) {
-      this.userExists = '';
+      this.userError = '';
       if (!localStorage.users) {
         localStorage.setItem('users', '');
       }
@@ -40,26 +40,17 @@ export class RegistrationComponent implements OnInit {
       const birthYear = regFields.birthYear.value;
       const password = regFields.password.value;
 
-      const users = localStorage.users;
-      if (users.length > 0) {
-        if (users.includes(`"email":"${email}"`)) {
-          this.userExists = 'Email is already registered';
-          return;
-        }
-      }
+      const user = {
+        firstName,
+        lastName,
+        email,
+        birthYear,
+        password
+      };
 
-      if (!this.userExists) {
-        const user = {
-          firstName,
-          lastName,
-          email,
-          birthYear,
-          password
-        };
+      this.userError = this.userService.addNewUser(user);
 
-        localStorage.users += `${JSON.stringify(user)};`;
-        console.log(localStorage.users);
-
+      if (!this.userError) {
         this.router.navigate(['/dashboard']);
         return;
       }
@@ -67,7 +58,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(localStorage.users);
+    console.log('MY ACC', localStorage.myAcc);
+    console.log('USER LIST', localStorage.users);
   }
-
 }

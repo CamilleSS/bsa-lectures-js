@@ -13,3 +13,14 @@ app-root {
   justify-content: center;
   align-items: flex-start;
 }
+
+app-dashboard {
+  width: 100vw;
+}
+
+app-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

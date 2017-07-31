@@ -1,0 +1,9 @@
+#table {
+  width: 70vw;
+  margin: 0 auto;
+}
+
+#table-header, .table-row {
+  display: flex;
+  justify-content: space-between;
+}

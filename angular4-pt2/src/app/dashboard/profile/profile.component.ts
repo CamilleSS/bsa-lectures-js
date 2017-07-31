@@ -1,38 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// import { NgForm } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: [
     '../../app.component.css',
-    // '../dashboard.component.css',
     './profile.component.css'
-  ]
+  ],
+  providers: [UserService]
 })
+
 export class ProfileComponent implements OnInit {
-  // regForm = NgForm;
+  userError = '';
   user = {
-    firstName: 'qqq',
-    lastName: 'qqq',
-    email: 'q@q.qq',
-    birthYear: '1111',
-    password: 'qqq'
+    firstName: '',
+    lastName: '',
+    email: '',
+    birthYear: '',
+    password: ''
   };
 
-  userExists = '';
-
-  constructor(public router: Router) {
+  constructor(public router: Router, public userService: UserService) {
     // localStorage.users = '';
   }
 
-  register(form): void {
+  updateUser(form): void {
     if (form.valid) {
-      this.userExists = '';
-      if (!localStorage.users) {
-        localStorage.setItem('users', '');
-      }
+      this.userError = '';
 
       const regFields = form.form.controls;
       const firstName = regFields.firstName.value;
@@ -41,34 +37,24 @@ export class ProfileComponent implements OnInit {
       const birthYear = regFields.birthYear.value;
       const password = regFields.password.value;
 
-      const users = localStorage.users;
-      if (users.length > 0) {
-        if (users.includes(`"email":"${email}"`)) {
-          this.userExists = 'Email is already registered';
-          return;
-        }
-      }
+      const user = {
+        firstName,
+        lastName,
+        email,
+        birthYear,
+        password
+      };
 
-      if (!this.userExists) {
-        const user = {
-          firstName,
-          lastName,
-          email,
-          birthYear,
-          password
-        };
-
-        localStorage.users += `${JSON.stringify(user)};`;
-        console.log(localStorage.users);
-
-        this.router.navigate(['/dashboard']);
-        return;
-      }
+      this.userError = this.userService.updateUser(user);
     }
   }
 
   ngOnInit() {
+    console.log(localStorage.myAcc);
     console.log(localStorage.users);
+
+    this.user = JSON.parse(localStorage.myAcc);
+    console.log(this.user);
   }
 
 }
