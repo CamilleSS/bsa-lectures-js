@@ -61,9 +61,6 @@ export class UsersComponent implements OnInit {
 
   constructor(public userService: UserService) {}
 
-  ngOnInit() {
-    console.log(localStorage.myAcc);
-    console.log(localStorage.users);
-  }
+  ngOnInit() {}
 
 }

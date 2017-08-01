@@ -5,12 +5,32 @@
   <div id="milliseconds">{{ remainderOutput.milliseconds }}</div>
 </div>
 
-<div id="duration">
-  <p>set duration in minutes</p>
-  <input id="duration-input" type="text" name="duration" (keyup)="activateButtons($event)" #duration>
-</div>
+<form #form="ngForm">
+  <div id="duration">
+    <p>set duration in minutes</p>
+    <input
+      id="duration-input"
+      type="text"
+      name="duration"
+      value="{{startDuration}}"
+      [disabled]="inputDisabled"
+      (keyup)="activateButtons($event, durationInput.value)"
+      [(ngModel)]="startDuration"
+      #durationInput="ngModel">
+  </div>
 
-<div id="buttons">
-  <button id="main-button" [disabled]="mainButtonDisabled" (click)="onMainButtonClick(duration.value)">{{ mainButtonValue }}</button>
-  <button id="reset" (click)="onResetButtonClick()">Reset</button>
-</div>
+  <div id="buttons">
+    <button
+      id="main-button"
+      [disabled]="mainButtonDisabled"
+      (click)="onMainButtonClick()">
+      {{ mainButtonValue }}
+    </button>
+
+    <button
+      id="reset"
+      (click)="onResetButtonClick()">
+      Reset
+    </button>
+  </div>
+</form>

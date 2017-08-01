@@ -13,6 +13,8 @@ export class TimerComponentComponent implements OnInit {
   constructor(public convertationService: ConvertationService) {}
   mainButtonValue = 'Start';
   mainButtonDisabled = true;
+  inputDisabled = false;
+  startDuration = '';
   duration = 0;
   remainderOutput = {
     hours: '00',
@@ -22,18 +24,21 @@ export class TimerComponentComponent implements OnInit {
   };
   timerInterval;
 
-  activateButtons(event: any): void {
+  activateButtons(event: any, duration): void {
     if (!isNaN(event.target.value) && event.target.value > 0) {
       this.mainButtonDisabled = false;
+      this.duration = this.convertationService.convertToMilliseconds(duration);
+      const output = this.convertationService.makeOutput(this.duration);
+      this.remainderOutput = output;
     } else {
       this.mainButtonDisabled = true;
     }
   }
 
-  onMainButtonClick(duration: number): void {
-    if (this.mainButtonValue === 'Start') {
-      this.duration = this.convertationService.convertToMilliseconds(duration);
+  onMainButtonClick(): void {
+    this.inputDisabled = true;
 
+    if (this.mainButtonValue === 'Start') {
       this.timerInterval = setInterval(() => {
         const output = this.convertationService.makeOutput(this.duration);
         this.remainderOutput = output;
@@ -60,6 +65,9 @@ export class TimerComponentComponent implements OnInit {
   onResetButtonClick(): void {
     clearInterval(this.timerInterval);
     this.mainButtonValue = 'Start';
+    this.mainButtonDisabled = true;
+    this.inputDisabled = false;
+    this.startDuration = '';
     this.duration = 0;
     this.remainderOutput = {
       hours: '00',
