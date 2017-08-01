@@ -48,16 +48,32 @@ export class UsersComponent implements OnInit {
   field = '';
   order = '';
   query = '';
+  lastTriggeredColumn: number;
   users = this.userService.getUsers();
 
   setOrder(index: number): void {
+    this.refreshIcons(index);
     this.field = this.tableHeader[index].property;
+
+    if (this.lastTriggeredColumn !== index) {
+      this.order = '';
+    }
+
     if (this.order === '' || this.order === 'asc') {
       this.tableHeader[index].order = this.orderSymbols.desc;
       this.order = 'desc';
     } else if (this.order === 'desc') {
       this.tableHeader[index].order = this.orderSymbols.asc;
       this.order = 'asc';
+    }
+
+    this.lastTriggeredColumn = index;
+  }
+
+  refreshIcons(index: number): void {
+    for (let i = 0; i < this.tableHeader.length; i++) {
+      if (i !== index)
+        this.tableHeader[i].order = this.orderSymbols.default;
     }
   }
 

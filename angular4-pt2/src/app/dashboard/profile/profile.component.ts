@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   title = 'Profile';
   buttonName = 'Save';
   userError = '';
+  dataUpdatedMessage = '';
 
   user = {
     firstName: '',
@@ -47,6 +48,11 @@ export class ProfileComponent implements OnInit {
       };
 
       this.userError = this.userService.updateUser(user);
+      if (this.userError === '') {
+        this.dataUpdatedMessage = 'Your profile has been updated!';
+      } else {
+        this.dataUpdatedMessage = '';
+      }
     }
   }
 

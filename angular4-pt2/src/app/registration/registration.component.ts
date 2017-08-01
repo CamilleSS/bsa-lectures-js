@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service';
   templateUrl: './registration.component.html',
   styleUrls: [
     '../app.component.css',
+    '../login/login.component.css',
     './registration.component.css'
   ],
   providers: [UserService]

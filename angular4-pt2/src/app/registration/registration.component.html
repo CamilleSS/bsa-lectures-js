@@ -85,4 +85,11 @@
       </button>
     </div>
   </form>
+
+  <div id="links" *ngIf="title === 'Registration'">
+    <a href="../login">Login</a>
+    <a href="../remind-password">Forgot my password</a>
+  </div>
+
+  <div id="update-message" *ngIf="dataUpdatedMessage">{{ dataUpdatedMessage }}</div>
 </div>

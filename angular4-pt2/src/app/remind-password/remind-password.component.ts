@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './remind-password.component.html',
   styleUrls: [
     '../app.component.css',
+    '../login/login.component.css',
     './remind-password.component.css'
   ]
 })
