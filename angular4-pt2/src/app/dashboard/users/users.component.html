@@ -1,18 +1,21 @@
 <div id="title">
   <h1>User list</h1>
+  <div id="search">
+    <input type="text" name="search" placeholder="search" [(ngModel)]="query">
+  </div>
 </div>
+
 
 <div id="table">
   <div id="table-header">
-    <div>first name</div>
-    <div>last name</div>
-    <div>email</div>
-    <div>birth year</div>
-    <div>password</div>
+    <div class="header-column" *ngFor="let row of tableHeader; let i = index" (click)="setOrder(i)">
+      <div>{{ row.text }}</div>
+      <div class="order-icon">{{ row.order }}</div>
+    </div>
   </div>
 
   <div id="table-content">
-    <div class="table-row" *ngFor="let user of users">
+    <div class="table-row" *ngFor="let user of users | sort:field:order:query">
       <div>{{ user.firstName }}</div>
       <div>{{ user.lastName }}</div>
       <div>{{ user.email }}</div>

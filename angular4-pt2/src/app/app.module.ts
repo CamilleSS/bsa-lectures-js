@@ -12,7 +12,7 @@ import { ForLoggedInGuard } from './guard/for-logged-in.guard';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { TimerComponent } from './dashboard/timer/timer.component';
 import { UsersComponent } from './dashboard/users/users.component';
-import { LogoutComponent } from './dashboard/logout/logout.component';
+import { SortPipe } from './pipes/sort.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { LogoutComponent } from './dashboard/logout/logout.component';
     ProfileComponent,
     TimerComponent,
     UsersComponent,
-    LogoutComponent
+    SortPipe
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,64 @@
+#search {
+  display: block;
+  float: right;
+  margin-right: 15vw;
+}
+
+#search > input {
+  width: 150px;
+  height: 20px;
+  padding-right: 10px;
+  text-align: right;
+}
+
 #table {
   width: 70vw;
   margin: 0 auto;
 }
 
+#table-header {
+  font-weight: 600;
+}
+
 #table-header, .table-row {
   display: flex;
   justify-content: space-between;
+}
+
+#table-header > div, .table-row > div {
+  flex-basis: 20%;
+}
+
+.header-column {
+  padding: 20px;
+}
+
+.header-column:hover {
+  cursor: pointer;
+}
+
+.header-column > div {
+  display: inline-block;
+}
+
+.header-column:nth-child(2n+1),
+.table-row > div:nth-child(2n+1) {
+  background-color: #f2f1f4;
+}
+
+.header-column:nth-child(2n),
+.table-row > div:nth-child(2n) {
+  background-color: #e6f2f9;
+}
+
+.order-icon {
+  float: right;
+}
+
+.table-row {
+  border-top: 4px solid #fff;
+}
+
+.table-row > div {
+  padding: 10px 20px;
 }

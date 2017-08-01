@@ -8,7 +8,6 @@ import { ForLoggedInGuard } from './guard/for-logged-in.guard';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 import { TimerComponent } from './dashboard/timer/timer.component';
 import { UsersComponent } from './dashboard/users/users.component';
-import { LogoutComponent } from './dashboard/logout/logout.component';
 
 const routes: Routes = [
   {
@@ -40,11 +39,6 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
-        canActivate: [ForLoggedInGuard]
-      },
-      {
-        path: 'logout',
-        component: LogoutComponent,
         canActivate: [ForLoggedInGuard]
       }
     ]
