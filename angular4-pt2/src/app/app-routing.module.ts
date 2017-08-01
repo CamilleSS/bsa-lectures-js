@@ -6,7 +6,7 @@ import { RemindPasswordComponent } from './remind-password/remind-password.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForLoggedInGuard } from './guard/for-logged-in.guard';
 import { ProfileComponent } from './dashboard/profile/profile.component';
-import { TimerComponent } from './dashboard/timer/timer.component';
+import { ClockComponent } from './dashboard/clock/clock.component';
 import { UsersComponent } from './dashboard/users/users.component';
 
 const routes: Routes = [
@@ -32,8 +32,8 @@ const routes: Routes = [
         canActivate: [ForLoggedInGuard]
       },
       {
-        path: 'timer',
-        component: TimerComponent,
+        path: 'clock',
+        component: ClockComponent,
         canActivate: [ForLoggedInGuard]
       },
       {

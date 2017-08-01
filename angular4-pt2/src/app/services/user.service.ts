@@ -56,7 +56,10 @@ export class UserService {
   getUsers() {
     const usersRaw = localStorage.users;
     const users = JSON.parse(usersRaw);
-
     return users;
+  }
+
+  logOut() {
+    localStorage.removeItem('myAcc');
   }
 }

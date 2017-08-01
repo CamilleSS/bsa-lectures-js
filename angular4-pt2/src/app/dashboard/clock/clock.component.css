@@ -1,0 +1,12 @@
+app-clock-main-component {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 30vh;
+  max-width: 500px;
+}

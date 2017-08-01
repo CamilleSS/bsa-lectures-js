@@ -1,20 +1,31 @@
 header {
-  /*width: 100vw;*/
   background: #333;
 }
 
 nav {
+  position: relative;
   padding: 30px;
   text-align: center;
 }
 
-nav > a {
+nav > a,
+nav > div {
   display: inline-block;
   margin: 0 20px;
   color: #fff;
   text-decoration: none;
 }
 
-nav > a:hover {
+nav > div {
+  position: absolute;
+  right: 0;
+}
+
+nav > a:hover{
   text-decoration: underline;
+}
+
+nav > div:hover {
+  cursor: pointer;
+  color: #ddd;
 }

@@ -1,0 +1,20 @@
+app-clock-component,
+app-timer-component,
+app-stopwatch-component {
+  display: inline-block;
+  font-size: 2rem;
+}
+
+#mode-block {
+  display: inline-block;
+  font-size: 1.3rem;
+}
+
+#mode-block > div {
+  display: block;
+  width: 150px;
+}
+
+#mode-block > div:nth-child(-n+2) {
+  margin-bottom: 5px;
+}

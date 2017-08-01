@@ -1,0 +1,49 @@
+#display,
+#lap-display {
+  display: inline-block;
+}
+
+#display > div,
+#lap-display > div {
+  float: left;
+}
+
+.hours::after,
+.minutes::after,
+.seconds::after {
+  content: ':';
+  margin: 0 4px;
+}
+
+#laps {
+  width: 150px;
+}
+
+#laps > div {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid #333;
+  font-size: 1rem;
+}
+
+#avg {
+  margin-top: 20px;
+}
+
+.lap-time {
+  height: 20px;
+}
+
+.avg {
+  display: inline-block;
+  float: left;
+}
+
+.better-result {
+  color: #65d268;
+}
+
+.worse-result {
+  color: #d24354;
+}
