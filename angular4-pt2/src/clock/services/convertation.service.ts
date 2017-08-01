@@ -30,6 +30,7 @@ export class ConvertationService {
       seconds: secondsToDisplay,
       milliseconds: millisecondsToDisplay
     };
+
     return durationOutput;
   }
 

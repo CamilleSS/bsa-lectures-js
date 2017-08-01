@@ -11,22 +11,26 @@ import { ConvertationService } from '../services/convertation.service';
 export class StopwatchComponentComponent implements OnInit {
 
   constructor(public convertationService: ConvertationService) {}
+
   mainButtonValue = 'Start';
   lapButtonDisabled = true;
   duration = 0;
   lapDuration = 0;
+
   durationOutput = {
     hours: '00',
     minutes: '00',
     seconds: '00',
     milliseconds: '000'
   };
+
   lapDurationOutput = {
     hours: '00',
     minutes: '00',
     seconds: '00',
     milliseconds: '000'
   };
+
   stopwatchInterval;
   laps = [];
   avg = 0;
@@ -136,18 +140,21 @@ export class StopwatchComponentComponent implements OnInit {
     this.duration = 0;
     this.lapDuration = 0;
     this.avg = 0;
+
     this.durationOutput = {
       hours: '00',
       minutes: '00',
       seconds: '00',
       milliseconds: '000'
     };
+
     this.lapDurationOutput = {
       hours: '00',
       minutes: '00',
       seconds: '00',
       milliseconds: '000'
     };
+
     this.avgOutput = '00:00:00:000';
   }
 

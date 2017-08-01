@@ -16,10 +16,12 @@ export class RemindPasswordComponent implements OnInit {
     email: '',
     answer: ''
   };
+
   mathExpression = {
     'number1': 10000,
     'number2': 800
   };
+
   numberAnswer = (this.mathExpression.number1 + this.mathExpression.number2);
   stringAnswer = this.numberAnswer.toString().substring(0, 3);
 
@@ -45,16 +47,15 @@ export class RemindPasswordComponent implements OnInit {
 
           for (const user of users) {
             if (user.email === email) {
-              console.log(user.email);
 
               if (this.stringAnswer === answer) {
                 const passedEmail = user.email;
-                console.log(passedEmail);
                 const passedPassword = user.password;
                 this.router.navigate([
                   `/remind-password/${passedEmail}|||${passedPassword}`
                 ]);
                 return;
+
               } else {
                 this.userError = 'Wrong answer';
                 return;

@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './password-output.component.html',
   styleUrls: ['./password-output.component.css']
 })
+
 export class PasswordOutputComponent implements OnInit, OnDestroy {
 
   route$: Subscription;

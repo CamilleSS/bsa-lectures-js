@@ -11,18 +11,20 @@ import { ConvertationService } from '../services/convertation.service';
 export class TimerComponentComponent implements OnInit {
 
   constructor(public convertationService: ConvertationService) {}
+
   mainButtonValue = 'Start';
   mainButtonDisabled = true;
   inputDisabled = false;
   startDuration = '';
   duration = 0;
+  timerInterval;
+
   remainderOutput = {
     hours: '00',
     minutes: '00',
     seconds: '00',
     milliseconds: '000'
   };
-  timerInterval;
 
   activateButtons(event: any, duration): void {
     if (!isNaN(event.target.value) && event.target.value > 0) {
@@ -69,6 +71,7 @@ export class TimerComponentComponent implements OnInit {
     this.inputDisabled = false;
     this.startDuration = '';
     this.duration = 0;
+
     this.remainderOutput = {
       hours: '00',
       minutes: '00',

@@ -52,7 +52,6 @@ export class RegistrationComponent implements OnInit {
 
       if (!this.userError) {
         this.router.navigate(['/dashboard']);
-        return;
       }
     }
   }

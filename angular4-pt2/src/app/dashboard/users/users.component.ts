@@ -16,6 +16,7 @@ export class UsersComponent implements OnInit {
     'desc': '\u2193',
     'asc': '\u2191'
   };
+
   tableHeader = [
     {
       'property': 'firstName',
@@ -43,12 +44,13 @@ export class UsersComponent implements OnInit {
       'order': this.orderSymbols.default
     }
   ];
+
   field = '';
   order = '';
   query = '';
   users = this.userService.getUsers();
 
-  setOrder(index) {
+  setOrder(index: number): void {
     this.field = this.tableHeader[index].property;
     if (this.order === '' || this.order === 'asc') {
       this.tableHeader[index].order = this.orderSymbols.desc;

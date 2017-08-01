@@ -4,7 +4,13 @@
 
 <div id="mode-block">
   <div *ngFor="let mode of modes">
-    <input id="{{ mode.mode }}" type="radio" name="mode" [(value)]="mode.mode" [checked]="mode.checked" (change)="onModeChange(mode)">
+    <input
+      id="{{ mode.mode }}"
+      type="radio"
+      name="mode"
+      [(value)]="mode.mode"
+      [checked]="mode.checked"
+      (change)="onModeChange(mode)">
     <label for="{{ mode.mode }}">{{ mode.mode }}</label>
   </div>
 </div>

@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   title = 'Profile';
   buttonName = 'Save';
   userError = '';
+
   user = {
     firstName: '',
     lastName: '',

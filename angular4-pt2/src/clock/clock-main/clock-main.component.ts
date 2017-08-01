@@ -27,11 +27,7 @@ export class ClockMainComponent implements OnInit {
 
   onModeChange(mode) {
     for (const entry of this.modes) {
-      if (mode.mode === entry.mode) {
-        entry.checked = true;
-      } else {
-        entry.checked = false;
-      }
+      entry.checked = mode.mode === entry.mode;
     }
   }
 

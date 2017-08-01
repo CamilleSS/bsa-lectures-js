@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class UserService {
 
-  addNewUser(user) {
+  addNewUser(user): string {
     let userError = '';
     const users = localStorage.users;
     if (users.length > 0) {
@@ -21,7 +21,7 @@ export class UserService {
     return userError;
   }
 
-  getSingleUser(email) {
+  getSingleUser(email: string) {
     const users = this.getUsers();
     const getUser = user => {
       return user.email === email;
@@ -30,7 +30,7 @@ export class UserService {
     return foundUser;
   }
 
-  updateUser(userData) {
+  updateUser(userData): string {
     let userError = '';
     const usersRaw = localStorage.users;
     const currentUserEmail = JSON.parse(localStorage.myAcc).email;
@@ -44,7 +44,6 @@ export class UserService {
     const users = this.getUsers();
 
     const userIndex = users.map(user => {
-      console.log(user, currentUserEmail);
       return user.email;
     }).indexOf(currentUserEmail);
     users[userIndex] = userData;
@@ -53,7 +52,7 @@ export class UserService {
     return userError;
   }
 
-  getUsers() {
+  getUsers(): any[] {
     const usersRaw = localStorage.users;
     const users = JSON.parse(usersRaw);
     return users;

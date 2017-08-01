@@ -11,11 +11,13 @@ export class SortPipe implements PipeTransform {
   transform(items: string[], field: string, order: string, query: string): any[] {
     items.sort((a: any, b: any): any => {
       const comparison = a[field] > b[field];
+
       if (order === 'desc') {
         return !comparison;
       } else if (order === 'asc') {
         return comparison;
       }
+
       return comparison;
     });
 
@@ -29,5 +31,4 @@ export class SortPipe implements PipeTransform {
 
     return items;
   }
-
 }

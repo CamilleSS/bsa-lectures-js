@@ -26,5 +26,4 @@ export class TimeHandlerService {
     amount = amount > 9 ? amount : '0' + amount;
     return amount;
   }
-
 }

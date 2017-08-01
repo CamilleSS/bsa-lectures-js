@@ -13,8 +13,19 @@
 </div>
 
 <div id="buttons">
-  <button id="main-button" (click)="onMainButtonClick()">{{ mainButtonValue }}</button>
-  <button id="lap" [disabled]="lapButtonDisabled" (click)="onLapButtonClick()">Lap</button>
+  <button
+    id="main-button"
+    (click)="onMainButtonClick()">
+    {{ mainButtonValue }}
+  </button>
+
+  <button
+    id="lap"
+    [disabled]="lapButtonDisabled"
+    (click)="onLapButtonClick()">
+    Lap
+  </button>
+
   <button id="reset" (click)="onResetButtonClick()">Reset</button>
 </div>
 
@@ -26,7 +37,16 @@
     <div class="lap-time">
       <div class="avg">{{ lap.durationOutput }}</div>
     </div>
-    <div class="lap-prev" *ngIf="i + 1 !== laps.length" [ngClass]="{'better-result': lap.betterThanPrev, 'worse-result': lap.worseThanPrev}">prev: {{ lap.prevOutput }}</div>
-    <div class="lap-avg" [ngClass]="{'better-result': lap.betterThanAvg, 'worse-result': lap.worseThanAvg}">avg: {{ lap.avgOutput }}</div>
+    <div
+      class="lap-prev"
+      *ngIf="i + 1 !== laps.length"
+      [ngClass]="{'better-result': lap.betterThanPrev, 'worse-result': lap.worseThanPrev}">
+      prev: {{ lap.prevOutput }}
+    </div>
+    <div
+      class="lap-avg"
+      [ngClass]="{'better-result': lap.betterThanAvg, 'worse-result': lap.worseThanAvg}">
+      avg: {{ lap.avgOutput }}
+    </div>
   </div>
 </div>
