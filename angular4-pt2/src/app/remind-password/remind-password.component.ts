@@ -14,8 +14,7 @@ export class RemindPasswordComponent implements OnInit {
   userError = '';
   user = {
     email: '',
-    answer: '',
-    password: ''
+    answer: ''
   };
   mathExpression = {
     'number1': 10000,
@@ -27,7 +26,6 @@ export class RemindPasswordComponent implements OnInit {
   constructor(public router: Router) {}
 
   remindPassword(form): void {
-    this.user.password = '';
     if (form.valid) {
       this.userError = '';
       if (!localStorage.users) {
@@ -43,14 +41,19 @@ export class RemindPasswordComponent implements OnInit {
 
       if (usersRaw.length > 0) {
         if (usersRaw.includes(`"email":"${email}"`)) {
-          const users = usersRaw.split(';');
+          const users = JSON.parse(usersRaw);
 
           for (const user of users) {
-            if (user.includes(`"email":"${email}"`)) {
-              const userJson = JSON.parse(user);
+            if (user.email === email) {
+              console.log(user.email);
 
               if (this.stringAnswer === answer) {
-                this.user.password = userJson.password;
+                const passedEmail = user.email;
+                console.log(passedEmail);
+                const passedPassword = user.password;
+                this.router.navigate([
+                  `/remind-password/${passedEmail}|||${passedPassword}`
+                ]);
                 return;
               } else {
                 this.userError = 'Wrong answer';

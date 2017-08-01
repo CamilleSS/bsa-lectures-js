@@ -9,6 +9,7 @@ import { ProfileComponent } from './dashboard/profile/profile.component';
 import { ClockComponent } from './dashboard/clock/clock.component';
 import { UsersComponent } from './dashboard/users/users.component';
 import { ForLoggedOutGuard } from './guards/for-logged-out.guard';
+import { PasswordOutputComponent } from './password-output/password-output.component';
 
 const routes: Routes = [
   {
@@ -53,7 +54,13 @@ const routes: Routes = [
   {
     path: 'remind-password',
     component: RemindPasswordComponent,
-    canActivate: [ForLoggedOutGuard]
+    canActivate: [ForLoggedOutGuard],
+    children: [
+      {
+        path: ':id',
+        component: PasswordOutputComponent
+      }
+    ]
   }
 ];
 

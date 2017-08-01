@@ -15,6 +15,7 @@ import { ClockComponent } from './dashboard/clock/clock.component';
 import { UsersComponent } from './dashboard/users/users.component';
 import { SortPipe } from './pipes/sort.pipe';
 import { ForLoggedOutGuard } from './guards/for-logged-out.guard';
+import { PasswordOutputComponent } from './password-output/password-output.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ForLoggedOutGuard } from './guards/for-logged-out.guard';
     ProfileComponent,
     ClockComponent,
     UsersComponent,
-    SortPipe
+    SortPipe,
+    PasswordOutputComponent
   ],
   imports: [
     BrowserModule,
