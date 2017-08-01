@@ -1,5 +1,5 @@
 <div id="title">
-  <h1>Registration</h1>
+  <h1>{{ title }}</h1>
 </div>
 
 <div id="form">
@@ -13,7 +13,11 @@
         type="text"
         name="firstName"
         required
-        [(ngModel)]="user.firstName">
+        minlength="2"
+        [(ngModel)]="user.firstName"
+        #firstNameInput="ngModel">
+      <div class="error" *ngIf="firstNameInput.errors && firstNameInput.errors.required && firstNameInput.touched">First name cannot be empty</div>
+      <div class="error" *ngIf="firstNameInput.errors && firstNameInput.errors.minlength && firstNameInput.touched">First name should contain at least 2 characters</div>
     </div>
 
     <div class="input-row">
@@ -22,7 +26,12 @@
         id="last-name"
         type="text"
         name="lastName"
-        [(ngModel)]="user.lastName">
+        required
+        minlength="2"
+        [(ngModel)]="user.lastName"
+        #lastNameInput="ngModel">
+      <div class="error" *ngIf="lastNameInput.errors && lastNameInput.errors.required && lastNameInput.touched">Last name cannot be empty</div>
+      <div class="error" *ngIf="lastNameInput.errors && lastNameInput.errors.minlength && lastNameInput.touched">Last name should contain at least 2 characters</div>
     </div>
 
     <div class="input-row">
@@ -47,8 +56,10 @@
         name="birthYear"
         required
         [(ngModel)]="user.birthYear"
-        pattern="^\d{4}$">
-      <!--<div class="error" *ngIf="user.birthYear.length < 4">Birth year cannot be empty</div>-->
+        pattern="^\d{4}$"
+        #birthYearInput="ngModel">
+      <div class="error" *ngIf="birthYearInput.errors && birthYearInput.errors.required && birthYearInput.touched">Birth year cannot be empty</div>
+      <div class="error" *ngIf="birthYearInput.errors && birthYearInput.errors.pattern && birthYearInput.touched">Birth year is not valid</div>
     </div>
 
     <div class="input-row">
@@ -68,9 +79,9 @@
     <div id="submit-button">
       <button
         type="button"
-        (click)="register(form)">
-        Register
-        <!--[disabled]="!form.form.valid"-->
+        (click)="methodOnSubmit(form)"
+        [disabled]="!form.form.valid">
+        {{ buttonName }}
       </button>
     </div>
   </form>

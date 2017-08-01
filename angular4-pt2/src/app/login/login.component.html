@@ -37,9 +37,9 @@
     <div id="submit-button">
       <button
         type="submit"
-        (click)="login(form)">
+        (click)="login(form)"
+        [disabled]="!form.form.valid">
         Login
-        <!--[disabled]="!form.form.valid"-->
       </button>
     </div>
 

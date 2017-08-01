@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 export class RemindPasswordComponent implements OnInit {
   userError = '';
   user = {
-    email: 'q@q.qq',
-    answer: 111,
+    email: '',
+    answer: '',
     password: ''
   };
   mathExpression = {
@@ -49,10 +49,7 @@ export class RemindPasswordComponent implements OnInit {
             if (user.includes(`"email":"${email}"`)) {
               const userJson = JSON.parse(user);
 
-              console.log(this.stringAnswer, answer);
-
               if (this.stringAnswer === answer) {
-                console.log('REMIND');
                 this.user.password = userJson.password;
                 return;
               } else {
@@ -68,5 +65,4 @@ export class RemindPasswordComponent implements OnInit {
   }
 
   ngOnInit() {}
-
 }

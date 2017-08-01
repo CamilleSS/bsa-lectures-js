@@ -13,18 +13,18 @@ import { UserService } from '../services/user.service';
 })
 
 export class RegistrationComponent implements OnInit {
+  title = 'Registration';
+  buttonName = 'Register';
   userError = '';
   user = {
-    firstName: 'qqq',
-    lastName: 'qqq',
-    email: 'q@q.qq',
-    birthYear: '1111',
-    password: 'qqq'
+    firstName: '',
+    lastName: '',
+    email: '',
+    birthYear: '',
+    password: ''
   };
 
-  constructor(public router: Router, public userService: UserService) {
-    // localStorage.users = '';
-  }
+  constructor(public router: Router, public userService: UserService) {}
 
   register(form): void {
     if (form.valid) {
@@ -57,8 +57,9 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    console.log('MY ACC', localStorage.myAcc);
-    console.log('USER LIST', localStorage.users);
+  methodOnSubmit(form): void {
+    this.register(form);
   }
+
+  ngOnInit() {}
 }

@@ -4,7 +4,7 @@ import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
+  templateUrl: '../../registration/registration.component.html',
   styleUrls: [
     '../../app.component.css',
     './profile.component.css'
@@ -13,6 +13,8 @@ import { UserService } from '../../services/user.service';
 })
 
 export class ProfileComponent implements OnInit {
+  title = 'Profile';
+  buttonName = 'Save';
   userError = '';
   user = {
     firstName: '',
@@ -22,9 +24,7 @@ export class ProfileComponent implements OnInit {
     password: ''
   };
 
-  constructor(public router: Router, public userService: UserService) {
-    // localStorage.users = '';
-  }
+  constructor(public router: Router, public userService: UserService) {}
 
   updateUser(form): void {
     if (form.valid) {
@@ -49,12 +49,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    console.log(localStorage.myAcc);
-    console.log(localStorage.users);
-
-    this.user = JSON.parse(localStorage.myAcc);
-    console.log(this.user);
+  methodOnSubmit(form): void {
+    this.updateUser(form);
   }
 
+  ngOnInit() {
+    this.user = JSON.parse(localStorage.myAcc);
+  }
 }

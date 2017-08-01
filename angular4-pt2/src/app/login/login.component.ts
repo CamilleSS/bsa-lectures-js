@@ -15,8 +15,8 @@ import { UserService } from '../services/user.service';
 export class LoginComponent implements OnInit {
   userError = '';
   user = {
-    email: 'q@q.qq',
-    password: 'qqq'
+    email: '',
+    password: ''
   };
 
   constructor(public router: Router, public userService: UserService) {}
@@ -37,9 +37,7 @@ export class LoginComponent implements OnInit {
       const userJson = this.userService.getSingleUser(email);
       if (userJson) {
         if (userJson.password === password) {
-          console.log('LOGIN');
           localStorage.myAcc = JSON.stringify(userJson);
-          console.log(localStorage.users);
           this.router.navigate(['/dashboard']);
           return;
         } else {
@@ -52,9 +50,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    console.log('MY ACC', localStorage.myAcc);
-    console.log(localStorage.users);
-  }
+  ngOnInit() {}
 
 }

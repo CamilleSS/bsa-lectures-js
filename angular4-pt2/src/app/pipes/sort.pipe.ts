@@ -11,12 +11,9 @@ export class SortPipe implements PipeTransform {
   transform(items: string[], field: string, order: string, query: string): any[] {
     items.sort((a: any, b: any): any => {
       const comparison = a[field] > b[field];
-      console.log(comparison);
       if (order === 'desc') {
-        console.log(comparison);
         return !comparison;
       } else if (order === 'asc') {
-        console.log(comparison);
         return comparison;
       }
       return comparison;

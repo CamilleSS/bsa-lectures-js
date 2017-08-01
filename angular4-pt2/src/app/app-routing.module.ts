@@ -21,26 +21,22 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [ForLoggedInGuard],
     children: [
-      // {
-      //   path: '',
-      //   pathMatch: 'full',
-      //   redirectTo: '/profile',
-      //   canActivate: [ForLoggedInGuard]
-      // },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'profile'
+      },
       {
         path: 'profile',
-        component: ProfileComponent,
-        canActivate: [ForLoggedInGuard]
+        component: ProfileComponent
       },
       {
         path: 'clock',
-        component: ClockComponent,
-        canActivate: [ForLoggedInGuard]
+        component: ClockComponent
       },
       {
         path: 'users',
-        component: UsersComponent,
-        canActivate: [ForLoggedInGuard]
+        component: UsersComponent
       }
     ]
   },
