@@ -114,8 +114,8 @@ export class StopwatchComponentComponent implements OnInit {
     }
     this.avg = durationSum / this.laps.length;
 
-    const avgOutputRaw = this.convertationService.makeOutput(this.avg);
-    this.avgOutput = `${avgOutputRaw.hours}:${avgOutputRaw.minutes}:${avgOutputRaw.seconds}:${avgOutputRaw.milliseconds}`;
+    const avgOutputRawMain = this.convertationService.makeOutput(this.avg);
+    this.avgOutput = `${avgOutputRawMain.hours}:${avgOutputRawMain.minutes}:${avgOutputRawMain.seconds}:${avgOutputRawMain.milliseconds}`;
 
     for (const lap of this.laps) {
       lap.avg = lap.duration - this.avg;

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
           console.log('LOGIN');
           localStorage.myAcc = JSON.stringify(userJson);
           console.log(localStorage.users);
-          // this.router.navigate(['/dashboard']);
+          this.router.navigate(['/dashboard']);
           return;
         } else {
           this.userError = 'Wrong password';
