@@ -7,6 +7,11 @@ h1 {
   margin: 0;
 }
 
+form {
+  width: 35vw;
+  max-width: 400px;
+}
+
 #user-error {
   margin-bottom: 30px;
   color: #d23d4f;
